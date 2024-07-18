@@ -1,7 +1,20 @@
 import React from "react";
+import Title from "./Sections/Title";
+import WhyUs from "./Sections/WhyUs";
+import Features from "./Sections/Features";
+import UserReviews from "./Sections/UserReviews";
+import Footer from "../../components/Footer/Footer";
 
 const Homepage = () => {
-  return <div className="text-2xl font-bold text-red-500">Homepage</div>;
+  return (
+    <div>
+      <Title />
+      <WhyUs />
+      <Features />
+      <UserReviews />
+      <Footer />
+    </div>
+  );
 };
 
 export default Homepage;
