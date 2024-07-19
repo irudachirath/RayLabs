@@ -66,7 +66,7 @@ function renderStars(rating) {
 
 function UserReviews() {
   return (
-    <div className="w-5/6 m-auto pt-20 pb-28 flex flex-col items-center justify-center text-white">
+    <div className="w-5/6 m-auto py-[124px] flex flex-col items-center justify-center text-white">
       <h1 className="text-4xl font-bold mb-16">Our Patients' Feedback</h1>
       <div className="w-full flex items-center justify-center">
         <Swiper

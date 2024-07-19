@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <header className="w-full h-[70px] fixed top-0 left-0 z-10">
-      <div className="w-full h-full bg-black bg-opacity-70 backdrop-blur-md flex items-center">
+      <div className="w-full h-full bg-black bg-opacity-60 backdrop-blur-md flex items-center">
         <nav className="text-white w-full h-full flex justify-between items-center px-8">
           <Link to="/">
             <img

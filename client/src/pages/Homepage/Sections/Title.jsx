@@ -1,5 +1,6 @@
 import React from "react";
 import { HiArrowLongRight } from "react-icons/hi2";
+import { Link } from "react-scroll";
 
 const Title = () => {
   return (
@@ -24,7 +25,12 @@ const Title = () => {
       </div>
       <div className="absolute bottom-0 w-full">
         <div className="w-full grid grid-cols-3 gap-x-5 py-10">
-          <div className="flex justify-center items-center cursor-pointer group">
+          <Link
+            to="why-us"
+            smooth={true}
+            duration={500}
+            className="flex justify-center items-center cursor-pointer group"
+          >
             <div className="text-white text-xl font-bold transition-transform duration-300 group-hover:-translate-x-2">
               Why Choose Raylabs
             </div>
@@ -32,17 +38,27 @@ const Title = () => {
               className="ml-2 text-white transition-transform duration-300 group-hover:translate-x-2"
               size="45"
             />
-          </div>
-          <div className="flex justify-center items-center cursor-pointer group">
+          </Link>
+          <Link
+            to="features"
+            smooth={true}
+            duration={500}
+            className="flex justify-center items-center cursor-pointer group"
+          >
             <div className="text-white text-xl font-bold transition-transform duration-300 group-hover:-translate-x-2">
-              Search Diseases & Conditions
+              Explore Features
             </div>
             <HiArrowLongRight
               className="ml-2 text-white transition-transform duration-300 group-hover:translate-x-2"
               size="45"
             />
-          </div>
-          <div className="flex justify-center items-center cursor-pointer group">
+          </Link>
+          <Link
+            to="user-reviews"
+            smooth={true}
+            duration={500}
+            className="flex justify-center items-center cursor-pointer group"
+          >
             <div className="text-white text-xl font-bold transition-transform duration-300 group-hover:-translate-x-2">
               User Feedbacks
             </div>
@@ -50,7 +66,7 @@ const Title = () => {
               className="ml-2 text-white transition-transform duration-300 group-hover:translate-x-2"
               size="45"
             />
-          </div>
+          </Link>
         </div>
       </div>
     </>
