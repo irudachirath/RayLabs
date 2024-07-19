@@ -6,6 +6,8 @@ export default {
       backgroundImage: {
         "pink-gradient":
           "linear-gradient(to top right, rgba(143, 62, 151, 0.7), transparent)",
+        "pink-gradient-secondary":
+          "linear-gradient(to right, rgba(143, 62, 151, 0.7), transparent)",
       },
     },
   },
