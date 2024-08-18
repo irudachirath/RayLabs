@@ -13,8 +13,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<Login />} />
+        {/* <Route path="/" element={<Homepage />} /> */}
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/image-input-report" element={<ImageInputReport />} />
         <Route path="/user-history" element={<UserHistory />} />
