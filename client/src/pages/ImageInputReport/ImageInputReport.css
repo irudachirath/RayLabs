@@ -1,0 +1,184 @@
+.main-grid {
+    display: flex;
+    flex-direction: row;
+    max-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background-color: black;
+} 
+
+
+.container-sidebar {
+    background: #2C2C2C;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    display: flex;
+    min-width: 20%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.account-info {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.profile-icon {
+    font-size: 36px;
+    color: #a680ff;
+}
+
+.account-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.account-type {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+.new-chat-btn {
+    background-color: #7324d9;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 40px;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #B0B0B0;
+    cursor: pointer;
+}
+
+.settings-item:hover {
+    color: white;
+}
+
+.icon {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.logout {
+    color: #FF4B4B;
+}
+
+.container {
+    background: #2C2C2C;
+    margin: 20px; 
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    overflow: auto;
+    flex: 1; 
+    max-width: 600px; 
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    position: relative;
+}
+
+.header h1 {
+    margin-top: 150px;
+}
+
+.logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+    margin: 10px;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    font-size: 18px;
+    font-weight: 300;
+    color: #bbbbbb;
+}
+
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; 
+    margin-bottom: 80px;
+}
+
+.grid-container-1 {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 20px;
+}
+
+.img-xray {
+    height: 120px;
+}
+
+.upload-area h4 {
+    margin-bottom: 10px;
+}
+
+.file-input {
+    background-color: transparent;
+    color: #E1A8E7;
+    border: 2px solid #E1A8E7;
+    border-radius: 5px;
+    padding: 10px;
+    width: 600px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+}
+
+.file-input:hover {
+    background-color: rgba(255, 0, 127, 0.1); 
+}
+
+.button-submit {
+    background-color: #a259ff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.button-submit:hover {
+    background-color: #7e1ecc;
+} 
+
+
