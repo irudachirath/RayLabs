@@ -82,7 +82,7 @@ const ImageInputReport = () => {
             alt="RayLabs Logo"
           />
         </div>
-        <div className="w-full overflow-auto">
+        <div className="scroll-container">
           <div className="header">
             <div className="flex justify-center mb-2">
               <div>
@@ -132,7 +132,7 @@ const ImageInputReport = () => {
             )}
           </div>
         </div>
-        <div className="fixed bottom-[10px] w-2/3 py-3 background-style">
+        <div className="fixed bottom-[10px] w-2/3 py-3">
           <button type="submit" className="button-submit">
             Submit
           </button>

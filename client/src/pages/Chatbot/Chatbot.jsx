@@ -12,6 +12,7 @@ import { RiCrosshair2Line } from "react-icons/ri";
 import { MdOutlineTrendingUp } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import { useState } from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
 // import arrow from "../../assets/arrow.svg";
 
 const Chatbot = () => {
@@ -82,7 +83,7 @@ Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdie
             alt="RayLabs Logo"
           />
         </div>
-        <div className="w-full overflow-auto scroll-container">
+        <div className="w-full overflow-auto scroll-container mb-[70px]">
           <div className="header">
             <div className="flex justify-center mb-2">
               <div>
@@ -125,7 +126,7 @@ Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdie
               </div>
             ))}
           </div>
-          <div className="fixed my-auto bottom-[10px] left-96 w-2/3 py-3 flex justify-center items-center">
+          <div className="fixed bottom-[10px] py-4 flex justify-center items-center">
             <div className="chat-input">
               <input
                 type="text"
@@ -135,7 +136,10 @@ Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdie
                 placeholder="Type your message here..."
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               />
-              <button onClick={sendMessage} className="button-submit">
+              <button
+                onClick={sendMessage}
+                className="button-submit rounded-full px-[10px]"
+              >
                 <IoMdSend size="20" />
               </button>
             </div>

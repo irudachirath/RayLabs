@@ -25,29 +25,27 @@ const Navbar = () => {
             <NavListElement link="/help" text="How we Work" />
             <NavListElement link="/about" text="About" />
             <li>
-              <Link to="/login">
-                {isLoggedIn ? (
+              {isLoggedIn ? (
+                <div className="h-9 w-full">
+                  <PrimaryButton
+                    text="Logout"
+                    className="px-6"
+                    removeTranslate={true}
+                  />
+                </div>
+              ) : (
+                <Link to={isLoginPage ? "/register" : "/login"}>
                   <div className="h-9 w-full">
                     <PrimaryButton
-                      text="Logout"
+                      text={
+                        isLoginPage ? "Register as a User" : "Login as a User"
+                      }
                       className="px-6"
                       removeTranslate={true}
                     />
                   </div>
-                ) : (
-                  <Link to={isLoginPage ? "/register" : "/login"}>
-                    <div className="h-9 w-full">
-                      <PrimaryButton
-                        text={
-                          isLoginPage ? "Register as a User" : "Login as a User"
-                        }
-                        className="px-6"
-                        removeTranslate={true}
-                      />
-                    </div>
-                  </Link>
-                )}
-              </Link>
+                </Link>
+              )}
             </li>
           </ul>
         </nav>
