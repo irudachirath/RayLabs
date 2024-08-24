@@ -108,7 +108,7 @@ const ImageInputReport = () => {
                 ) : (
                   <img
                     className="img-xray"
-                    src="/src/assets/placeholder.png"
+                    src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Image%20Input%20Page%2Fplaceholder.png?alt=media&token=fd57ab23-6ae0-4889-8d20-6d94dc9f6142"
                     alt="X-ray"
                   />
                 )}
