@@ -7,6 +7,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import Chatbot from "./pages/Chatbot/Chatbot";
 import ImageInputReport from "./pages/ImageInputReport/ImageInputReport";
 import UserHistory from "./pages/UserHistory/UserHistory";
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/image-input-report" element={<ImageInputReport />} />
         <Route path="/user-history" element={<UserHistory />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
     </BrowserRouter>
   );
