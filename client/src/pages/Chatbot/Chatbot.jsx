@@ -12,8 +12,6 @@ import { RiCrosshair2Line } from "react-icons/ri";
 import { MdOutlineTrendingUp } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import { useState } from "react";
-import ScrollToBottom from "react-scroll-to-bottom";
-// import arrow from "../../assets/arrow.svg";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);

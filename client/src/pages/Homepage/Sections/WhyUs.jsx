@@ -4,7 +4,7 @@ import { BsRobot } from "react-icons/bs";
 import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 import { PiTarget } from "react-icons/pi";
 import { GoRocket } from "react-icons/go";
-import PrimaryButton from "../../../components/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 
 const WhyUs = () => {
   return (
