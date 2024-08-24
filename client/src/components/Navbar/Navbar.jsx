@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import PrimaryButton from "../Buttons/PrimaryButton";
 import NavListElement from "./NavListElement";
+import ModalTemplete from "../Modals/ModalTemplete";
+import Login from "../../pages/Login/Login";
 
 const Navbar = () => {
   const location = useLocation();
@@ -34,17 +36,36 @@ const Navbar = () => {
                   />
                 </div>
               ) : (
-                <Link to={isLoginPage ? "/register" : "/login"}>
-                  <div className="h-9 w-full">
-                    <PrimaryButton
+                <div className="h-9 w-full">
+                  {/* <PrimaryButton
                       text={
                         isLoginPage ? "Register as a User" : "Login as a User"
                       }
                       className="px-6"
                       removeTranslate={true}
-                    />
-                  </div>
-                </Link>
+                    /> */}
+                  <ModalTemplete
+                    text={
+                      isLoginPage ? "Register as a User" : "Login as a User"
+                    }
+                    content={
+                      <div>
+                        {/* <Link to="/">
+                          <img
+                            src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Flogo-rayLabs3.png?alt=media&token=6ffa96d9-d1ec-449e-9cba-10c3f3d9a182"
+                            alt="logo"
+                            className="h-12 object-fill"
+                          />
+                        </Link>
+                        <h1 className="text-4xl text-[#2d1230] font-bold mb-16 py-4 leading-snug">
+                          Log In to Unlock The <br />
+                          Best of RayLabs
+                        </h1> */}
+                        <Login />
+                      </div>
+                    }
+                  />
+                </div>
               )}
             </li>
           </ul>
