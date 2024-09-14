@@ -1,0 +1,32 @@
+{
+  "name": "medilabs-server",
+  "version": "1.0.0",
+  "description": "This is the server of medilabs (medical diagnosis assistant) application that integrates with Firebase Realtime Database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irudachirath/RayLabs.git"
+  },
+  "author": "group 4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irudachirath/RayLabs/issues"
+  },
+  "homepage": "https://github.com/irudachirath/RayLabs#readme",
+  "dependencies": {
+    "axios": "^1.7.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.4.0",
+    "formidable": "^3.5.1",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.4",
+    "winston": "^3.14.2"
+  }
+}
