@@ -1,0 +1,8 @@
+.custom-row {
+  background-color: #333333 !important;
+  color: #ffffff !important; /* Text color */
+}
+
+.custom-row:hover {
+  background-color: #8f3e97 !important;
+}

@@ -8,24 +8,30 @@ import {
   FaQuestionCircle,
   FaPowerOff,
 } from "react-icons/fa";
+import axios from "axios";
+import ImageInput from "./ImageInput";
+import LoadingButton from "../../components/Buttons/LoadingButton";
+import { set } from "@ant-design/plots/es/core/utils";
 
 const ImageInputReport = () => {
   const [uploadedImages, setUploadedImages] = useState([null]);
+  const [updatedImageLinks, setUpdatedImageLinks] = useState();
   const [btnVisible, setBtnVisible] = useState(true);
   const [imageFields, setImageFields] = useState([0]);
-
-  // Logging the uploaded images array whenever it changes
-  useEffect(() => {
-    console.log(uploadedImages);
-  }, [uploadedImages]);
+  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [imageResults, setImageResults] = useState(null);
 
   const handleImageChange = (event, index) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      const updatedImages = [...uploadedImages];
-      updatedImages[index] = imageUrl;
-      setUploadedImages(updatedImages);
+      setUploadedImages((prevImages) => {
+        const updatedImages = [...prevImages];
+        updatedImages[index] = file; // Store the file object, not the URL
+        setBtnVisible(true);
+        return updatedImages;
+      });
     }
   };
 
@@ -36,6 +42,7 @@ const ImageInputReport = () => {
       if (newFieldIndex < 5) {
         setImageFields([...imageFields, newFieldIndex]);
         setUploadedImages([...uploadedImages, null]);
+        setUploadSuccess(false);
       } else {
         setBtnVisible(false);
       }
@@ -43,6 +50,55 @@ const ImageInputReport = () => {
       alert(
         "Please upload an image in the last field before adding a new one."
       );
+    }
+  };
+
+  const handleImageUpload = () => {
+    if (uploadedImages.every((image) => image == null)) {
+      alert("Please select at least one image to upload.");
+      return;
+    }
+    const formData = new FormData();
+    uploadedImages.forEach((image, index) => {
+      if (image) formData.append(`image`, image);
+    });
+    setLoading(true);
+    axios
+      .post("http://localhost:5000/api/v1/images/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setUpdatedImageLinks(response.data.imageUrls);
+        setLoading(false);
+        setUploadSuccess(true);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  };
+
+  const handleSubmit = async () => {
+    setSubmitLoading(true);
+    if (!updatedImageLinks || updatedImageLinks.length === 0) {
+      alert("Please upload images before submitting.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/model/api/v1/predict/",
+        {
+          imageUrls: updatedImageLinks,
+        }
+      );
+      setImageResults(response.data); // Set the response data directly
+      setSubmitLoading(false);
+    } catch (error) {
+      console.error(error);
+      alert("Error submitting report.");
     }
   };
 
@@ -97,45 +153,40 @@ const ImageInputReport = () => {
             </p>
           </div>
           <div className="image-upload">
+            {console.log(imageResults)}
             {imageFields.map((index) => (
-              <div className="grid-container-1" key={index}>
-                {uploadedImages[index] ? (
-                  <img
-                    className="img-xray"
-                    src={uploadedImages[index]}
-                    alt="X-ray"
-                  />
-                ) : (
-                  <img
-                    className="img-xray"
-                    src="/src/assets/placeholder.png"
-                    alt="X-ray"
-                  />
-                )}
-                <div className="upload-area">
-                  <h4 className="text-start tracking-widest">
-                    Upload square image, less than 100KB
-                  </h4>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="file-input"
-                    onChange={(e) => handleImageChange(e, index)}
-                  />
-                </div>
+              <div key={index}>
+                <ImageInput
+                  index={index}
+                  uploadedImage={uploadedImages[index]}
+                  onImageChange={(event) => handleImageChange(event, index)}
+                  imageResult={imageResults && imageResults.data[index]}
+                />
               </div>
             ))}
-            {btnVisible && (
-              <button onClick={handleImageAdd} className="button-submit">
+            <div className="flex gap-6">
+              <button
+                disabled={!btnVisible}
+                onClick={handleImageAdd}
+                className="button-submit"
+              >
                 Add more Images
               </button>
-            )}
+              <LoadingButton
+                onClick={handleImageUpload}
+                loading={loading}
+                disable={uploadSuccess}
+                text="Upload Images"
+              />
+            </div>
           </div>
         </div>
         <div className="fixed bottom-[10px] w-2/3 py-3">
-          <button type="submit" className="button-submit">
-            Submit
-          </button>
+          <LoadingButton
+            onClick={handleSubmit}
+            loading={submitLoading}
+            text="Submit"
+          />
         </div>
       </div>
     </div>

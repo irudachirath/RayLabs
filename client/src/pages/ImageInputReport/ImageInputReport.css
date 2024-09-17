@@ -7,6 +7,10 @@
   background-color: black;
 }
 
+.ant-spin-dot-item {
+  background-color: white !important;
+}
+
 .container-sidebar {
   background: #2c2c2c;
   color: white;
@@ -215,8 +219,19 @@
   border-radius: 5px;
   cursor: pointer;
   border: none;
+  transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
 .button-submit:hover {
   background-color: #722d78;
+}
+
+.button-submit:disabled {
+  background-color: #8f3e97; /* Set the background color same as the normal state or another if needed */
+  cursor: not-allowed; /* Change cursor to indicate the button is disabled */
+  color: #ccc; /* Optional: change text color when disabled */
+}
+
+.button-submit:disabled:hover {
+  background-color: #8f3e97; /* Ensure hover has no effect */
 }

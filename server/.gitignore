@@ -3,3 +3,6 @@ venv/
 __pycache__/
 .DS_Store
 .env
+
+# Ignore the Firebase service account key file
+/config/serviceAccountKey.json
