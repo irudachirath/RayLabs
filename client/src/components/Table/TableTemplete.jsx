@@ -2,45 +2,114 @@ import React, { useEffect, useState } from "react";
 import { Table, ConfigProvider } from "antd";
 import qs from "qs";
 import styles from "./TableTemplete.module.css";
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    sorter: true,
-    render: (name) => `${name.first} ${name.last}`,
-    width: "20%",
-  },
-  {
-    title: "Gender",
-    dataIndex: "gender",
-    filters: [
-      {
-        text: "Male",
-        value: "male",
-      },
-      {
-        text: "Female",
-        value: "female",
-      },
-    ],
-    width: "20%",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-  },
-];
-
-const getRandomuserParams = (params) => ({
-  results: params.pagination?.pageSize,
-  page: params.pagination?.current,
-  ...params,
-});
+import { Image } from "antd";
+import { ExportOutlined, DeleteOutlined } from "@ant-design/icons";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const TableTemplete = () => {
+  const userId = "VIFU4wZqem8HJd9bAIlc";
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const handleReportRemove = async (id, userId) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/v1/reports/${id}`
+      );
+      toast.success("Report removed successfully");
+      fetchData();
+    } catch (error) {
+      toast.error("Error removing report");
+      console.error(error);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Date Created",
+      dataIndex: "timeStamp",
+      // sorter: true,
+      render: (ts) => `${new Date(ts).toLocaleString()}`,
+      width: "20%",
+    },
+    // {
+    //   title: "Time Created",
+    //   dataIndex: "timeStamp",
+    //   // sorter: true,
+    //   render: (ts) => `${new Date(ts).toLocaleTimeString()}`,
+    //   width: "20%",
+    // },
+    {
+      title: "Last Accessed",
+      dataIndex: "accessedTimeStamp",
+      // sorter: true,
+      render: (ts) => `${new Date(ts).toLocaleString()}`,
+      width: "20%",
+    },
+    {
+      title: "Images",
+      dataIndex: "data",
+      render: (data) => (
+        <Image.PreviewGroup
+          preview={{
+            onChange: (current, prev) =>
+              console.log(`current index: ${current}, prev index: ${prev}`),
+          }}
+        >
+          {data.map((d, index) => (
+            <span
+              key={index}
+              className="-mr-3 transition-all ease-in-out duration-300 hover:mr-3"
+            >
+              <Image
+                style={{ borderRadius: "50%", border: "2px solid #cccccc" }}
+                width={60}
+                src={d.image_url}
+              />
+            </span>
+          ))}
+        </Image.PreviewGroup>
+      ),
+      width: "20%",
+    },
+    {
+      title: "Report",
+      dataIndex: "id",
+      render: (id) => (
+        <a
+          href={`/report/${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#f7bbfc] hover:text-[#fcdeff]"
+        >
+          View <ExportOutlined />
+        </a>
+      ),
+      width: "15%",
+    },
+    {
+      title: "Remove",
+      dataIndex: "id",
+      render: (id) => (
+        <div
+          onClick={() => {
+            handleReportRemove(id, userId);
+          }}
+          className="text-[#ff0000d1] hover:text-[#ffa1a1]"
+        >
+          <DeleteOutlined style={{ fontSize: "20px" }} />
+        </div>
+      ),
+      width: "7%",
+    },
+  ];
+
+  const getRandomuserParams = (params) => ({
+    results: params.pagination?.pageSize,
+    page: params.pagination?.current,
+    ...params,
+  });
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
@@ -48,16 +117,17 @@ const TableTemplete = () => {
     },
   });
 
+  // fetch data from this http://localhost:5000/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc
   const fetchData = () => {
     setLoading(true);
     fetch(
-      `https://randomuser.me/api?${qs.stringify(
+      `http://localhost:5000/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc?${qs.stringify(
         getRandomuserParams(tableParams)
       )}`
     )
       .then((res) => res.json())
-      .then(({ results }) => {
-        setData(results);
+      .then((res) => {
+        setData(res);
         setLoading(false);
         setTableParams({
           ...tableParams,
@@ -109,13 +179,17 @@ const TableTemplete = () => {
     >
       <Table
         columns={columns}
-        rowKey={(record) => record.login.uuid}
+        rowKey={(record) => record.id}
         dataSource={data}
-        pagination={tableParams.pagination}
+        pagination={{
+          pageSize: tableParams.pagination.pageSize,
+          total: data.length,
+          current: tableParams.pagination.current,
+        }}
         loading={loading}
         onChange={handleTableChange}
         scroll={{
-          y: 450,
+          y: 420,
         }}
         style={{
           backgroundColor: "#000000", // Background color of the table container

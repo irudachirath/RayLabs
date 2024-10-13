@@ -137,3 +137,7 @@ button:focus-visible {
 .ant-dropdown-trigger span {
   color: #b34dbd !important;
 }
+
+.ant-image-mask {
+  border-radius: 50%;
+}

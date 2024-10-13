@@ -1,13 +1,14 @@
 import React from "react";
 import ReportCard from "./ReportCard";
 import ViewReport from "./ViewReport";
+import { placeholder } from "../../utils";
 
 const ImageInput = ({ index, uploadedImage, onImageChange, imageResult }) => {
-  const [showReport, setShowReport] = React.useState(false);
+  // const [showReport, setShowReport] = React.useState(false);
 
-  const handleReport = () => {
-    setShowReport(!showReport);
-  };
+  // const handleReport = () => {
+  //   setShowReport(!showReport);
+  // };
 
   return (
     <div>
@@ -20,11 +21,7 @@ const ImageInput = ({ index, uploadedImage, onImageChange, imageResult }) => {
               alt="X-ray"
             />
           ) : (
-            <img
-              className="img-xray"
-              src="/src/assets/placeholder.png"
-              alt="X-ray"
-            />
+            <img className="img-xray" src={placeholder} alt="X-ray" />
           )}
           <div className="upload-area">
             <h4 className="text-start tracking-widest">
@@ -38,15 +35,15 @@ const ImageInput = ({ index, uploadedImage, onImageChange, imageResult }) => {
             />
           </div>
         </div>
-        {imageResult && (
+        {/* {imageResult && (
           <div className="h-10 w-10 mt-auto mb-5">
             <ViewReport onClick={handleReport} />
           </div>
-        )}
+        )} */}
       </div>
-      {showReport && (
+      {/* {showReport && (
         <ReportCard data={imageResult} index={index} key={index} />
-      )}
+      )} */}
     </div>
   );
 };
