@@ -4,7 +4,7 @@ const cors = require("cors");
 const corsConfig = require("./config/cors");
 const firebaseAdmin = require("./config/firebase");
 
-const db = firebaseAdmin.database();
+const db = firebaseAdmin.firestore();
 // const bucket = firebaseAdmin.storage().bucket();
 
 const PORT = process.env.PORT || 5000;
@@ -18,15 +18,9 @@ app.use(express.json());
 // routes
 app.use("/api/v1/images", require("./routes/imageRoutes.js"));
 app.use("/api/v1/users", require("./routes/userRoutes.js"));
+app.use("/api/v1/reports", require("./routes/reportRoutes.js"));
 
 // start server
 app.listen(PORT, async () => {
-  try {
-    const ref = db.ref("users");
-    const snapshot = await ref.once("value");
-    console.log(snapshot.val());
-    console.log(`Server is running on port ${PORT}`);
-  } catch (error) {
-    console.error("Error connecting to the database: ", error.message);
-  }
+  console.log(`Server is running on port ${PORT}`);
 });

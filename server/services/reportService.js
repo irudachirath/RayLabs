@@ -1,6 +1,6 @@
-const admin = require("../config/firebase");
-const db = admin.firestore();
-const bucket = admin.storage().bucket();
+const firebase = require("../config/firebase");
+const db = firebase.firestore();
+const bucket = firebase.storage().bucket();
 
 module.exports.createReport = async (data) => {
   const report = {
@@ -18,7 +18,7 @@ module.exports.createReport = async (data) => {
   // add the report ID to the user's reportIds array
   const userRef = db.collection("users").doc(data.userId);
   await userRef.update({
-    reportIds: admin.firestore.FieldValue.arrayUnion(docRef.id),
+    reportIds: firebase.firestore.FieldValue.arrayUnion(docRef.id),
   });
 
   return { id: docRef.id };
@@ -58,7 +58,7 @@ module.exports.deleteReport = async (reportId) => {
   userSnapshot.forEach(async (doc) => {
     userId = doc.id;
     await doc.ref.update({
-      reportIds: admin.firestore.FieldValue.arrayRemove(reportId),
+      reportIds: firebase.firestore.FieldValue.arrayRemove(reportId),
     });
   });
   // get the userId from the report
