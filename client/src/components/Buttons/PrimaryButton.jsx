@@ -6,6 +6,7 @@ const PrimaryButton = ({
   removeTranslate = false,
   type,
   className = "",
+  icon = <></>,
 }) => {
   return (
     <button
@@ -15,6 +16,7 @@ const PrimaryButton = ({
         !removeTranslate ? "hover:-translate-y-1" : ""
       } duration-300 focus:outline-none  ${className}`}
     >
+      {icon}
       {text}
     </button>
   );

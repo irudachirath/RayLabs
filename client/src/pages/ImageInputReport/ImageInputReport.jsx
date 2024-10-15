@@ -8,24 +8,34 @@ import {
   FaQuestionCircle,
   FaPowerOff,
 } from "react-icons/fa";
+import axios from "axios";
+import ImageInput from "./ImageInput";
+import LoadingButton from "../../components/Buttons/LoadingButton";
+import toast from "react-hot-toast";
+import { logo } from "../../utils";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
 
 const ImageInputReport = () => {
+  const userId = "VIFU4wZqem8HJd9bAIlc";
   const [uploadedImages, setUploadedImages] = useState([null]);
+  const [updatedImageLinks, setUpdatedImageLinks] = useState();
   const [btnVisible, setBtnVisible] = useState(true);
   const [imageFields, setImageFields] = useState([0]);
-
-  // Logging the uploaded images array whenever it changes
-  useEffect(() => {
-    console.log(uploadedImages);
-  }, [uploadedImages]);
+  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [imageResults, setImageResults] = useState(null);
+  const [reportId, setReportId] = useState(null);
 
   const handleImageChange = (event, index) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      const updatedImages = [...uploadedImages];
-      updatedImages[index] = imageUrl;
-      setUploadedImages(updatedImages);
+      setUploadedImages((prevImages) => {
+        const updatedImages = [...prevImages];
+        updatedImages[index] = file; // Store the file object, not the URL
+        setBtnVisible(true);
+        return updatedImages;
+      });
     }
   };
 
@@ -36,14 +46,96 @@ const ImageInputReport = () => {
       if (newFieldIndex < 5) {
         setImageFields([...imageFields, newFieldIndex]);
         setUploadedImages([...uploadedImages, null]);
+        setUploadSuccess(false);
       } else {
         setBtnVisible(false);
       }
     } else {
-      alert(
-        "Please upload an image in the last field before adding a new one."
-      );
+      toast.error("Please upload the current image before adding a new one.");
     }
+  };
+
+  const handleImageUpload = () => {
+    if (uploadedImages.every((image) => image == null)) {
+      toast.error("Please choose at least one image to upload.");
+      return;
+    }
+    const formData = new FormData();
+    uploadedImages.forEach((image, index) => {
+      if (image) formData.append(`image`, image);
+    });
+
+    //Append the userId to the form data
+    formData.append("userId", userId);
+
+    setLoading(true);
+    axios
+      .post("http://localhost:5000/api/v1/images/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setUpdatedImageLinks(response.data.imageUrls);
+        setLoading(false);
+        setUploadSuccess(true);
+        toast.success("Images uploaded successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(error);
+      });
+  };
+
+  const handleReportSave = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/reports",
+        {
+          userId: userId,
+          data: data,
+          description: "Image analysis report",
+          location: "Unknown",
+          timeStamp: new Date().toISOString(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!updatedImageLinks || updatedImageLinks.length === 0) {
+      toast.error("Please upload images before submitting.");
+      return;
+    }
+
+    try {
+      setSubmitLoading(true);
+      const response = await axios.post(
+        "http://localhost:8000/model/api/v1/predict/",
+        {
+          imageUrls: updatedImageLinks,
+        }
+      );
+      setImageResults(response.data); // Set the response data directly
+      setSubmitLoading(false);
+      toast.success("Images submitted for analysis successfully.");
+      const id = await handleReportSave(response.data);
+      setReportId(id);
+      toast.success("Report saved successfully.");
+    } catch (error) {
+      console.error(error);
+      setSubmitLoading(false);
+      toast.error("Error submitting the images for analysis.");
+    }
+  };
+
+  const handleReport = () => {
+    const id = reportId.id; // Replace with the actual ID
+    const url = `/report/${id}`;
+    window.open(url, "_blank");
   };
 
   return (
@@ -76,11 +168,7 @@ const ImageInputReport = () => {
       </div>
       <div className="container">
         <div className="">
-          <img
-            className="logo"
-            src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Flogo-rayLabs3.png?alt=media&token=6ffa96d9-d1ec-449e-9cba-10c3f3d9a182"
-            alt="RayLabs Logo"
-          />
+          <img className="logo" src={logo} alt="RayLabs Logo" />
         </div>
         <div className="scroll-container">
           <div className="header">
@@ -98,44 +186,43 @@ const ImageInputReport = () => {
           </div>
           <div className="image-upload">
             {imageFields.map((index) => (
-              <div className="grid-container-1" key={index}>
-                {uploadedImages[index] ? (
-                  <img
-                    className="img-xray"
-                    src={uploadedImages[index]}
-                    alt="X-ray"
-                  />
-                ) : (
-                  <img
-                    className="img-xray"
-                    src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Image%20Input%20Page%2Fplaceholder.png?alt=media&token=fd57ab23-6ae0-4889-8d20-6d94dc9f6142"
-                    alt="X-ray"
-                  />
-                )}
-                <div className="upload-area">
-                  <h4 className="text-start tracking-widest">
-                    Upload square image, less than 100KB
-                  </h4>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="file-input"
-                    onChange={(e) => handleImageChange(e, index)}
-                  />
-                </div>
+              <div key={index}>
+                <ImageInput
+                  index={index}
+                  uploadedImage={uploadedImages[index]}
+                  onImageChange={(event) => handleImageChange(event, index)}
+                  imageResult={imageResults && imageResults.data[index]}
+                />
               </div>
             ))}
-            {btnVisible && (
-              <button onClick={handleImageAdd} className="button-submit">
+            <div className="flex gap-6">
+              <button
+                disabled={!btnVisible}
+                onClick={handleImageAdd}
+                className="button-submit"
+              >
                 Add more Images
               </button>
-            )}
+              <LoadingButton
+                onClick={handleImageUpload}
+                loading={loading}
+                disable={uploadSuccess}
+                text="Upload Images"
+              />
+            </div>
           </div>
         </div>
         <div className="fixed bottom-[10px] w-2/3 py-3">
-          <button type="submit" className="button-submit">
-            Submit
-          </button>
+          <div className="flex justify-center gap-4">
+            <LoadingButton
+              onClick={handleSubmit}
+              loading={submitLoading}
+              text="Submit"
+            />
+            {reportId && (
+              <LoadingButton text="View Report" onClick={handleReport} />
+            )}
+          </div>
         </div>
       </div>
     </div>

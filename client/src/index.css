@@ -68,3 +68,76 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.custom-border-gradient {
+  border-image: linear-gradient(to right, #8f3e97, rgba(143, 62, 151, 0)) 1;
+}
+
+/* Pagination container background and border */
+.ant-pagination-item {
+  background-color: #000000 !important;
+  border: 2px solid #aaaaaa !important;
+}
+
+/* Text color for the pagination item link */
+.ant-pagination-item a {
+  color: #ffffff !important; /* White text color */
+}
+
+/* Pagination item hover effect */
+.ant-pagination-item:hover {
+  border: 2px solid #903e97 !important;
+}
+
+/* Selected pagination item */
+.ant-pagination-item-active {
+  background-color: #903e97 !important;
+  border-color: #903e97 !important;
+  color: #ffffff;
+}
+
+.ant-select-dropdown {
+  background-color: #000000 !important;
+  border: 2px solid #aaaaaa !important;
+  color: #ffffff !important;
+}
+
+/* Dropdown for page size selection */
+.ant-select-selector {
+  background-color: #000000 !important;
+  border: 2px solid #aaaaaa !important;
+  color: #ffffff !important;
+}
+
+.ant-select-item-option {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Dropdown item hover */
+.ant-select-item-option:hover {
+  background-color: #903e97ad !important;
+  color: #ffffff !important;
+}
+
+/* Dropdown item selected */
+.ant-select-item-option-selected {
+  background-color: #903e97 !important;
+  color: #ffffff !important;
+}
+
+.ant-pagination-jump-prev a div span,
+.ant-pagination-jump-next a div span,
+.ant-pagination-prev button span,
+.ant-pagination-next button span {
+  color: #ffffff !important;
+}
+
+.ant-table-column-sorter span span,
+.ant-dropdown-trigger span {
+  color: #b34dbd !important;
+}
+
+.ant-image-mask {
+  border-radius: 50%;
+}

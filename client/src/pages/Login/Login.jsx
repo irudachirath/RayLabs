@@ -1,32 +1,52 @@
 import React from "react";
+import { logo, googleLogo } from "../../utils";
+// import GoogleLogin, { googleLogin } from "react-google-login";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
+  const clientId =
+    "317549661140-kur4aa93oi628jqfo91qrgqkm5rtjcsr.apps.googleusercontent.com";
+
+  const onSuccess = (response) => {
+    console.log(response);
+    setIsLoggedIn(true);
+  };
+  const onFailure = (response) => {
+    console.log(response);
+    setIsLoggedIn(false);
+  };
+
   return (
     <div className="p-8">
       <div className="space-y-4">
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Flogo-rayLabs3.png?alt=media&token=6ffa96d9-d1ec-449e-9cba-10c3f3d9a182"
-          loading="lazy"
-          className="w-40"
-        />
+        <img src={logo} loading="lazy" className="w-40" />
         <h2 className="mb-8 text-3xl text-white font-bold">
           Log in to unlock the <br />
           best of RayLabs.
         </h2>
       </div>
       <div className="mt-14 grid space-y-4">
-        <button className="group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:text-purple-400 focus:bg-purple-50 active:bg-purple-100">
-          <div className="relative flex items-center space-x-4 justify-center">
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              className="absolute left-0 w-5"
-              alt="google logo"
-            />
-            <span className="block w-max font-semibold tracking-wide text-white text-sm transition duration-300 sm:text-base">
-              Continue with Google
-            </span>
-          </div>
-        </button>
+        {/* <GoogleLogin
+          clientId={clientId}
+          render={(renderProps) => (
+            <button className="group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-[#8F3E97]">
+              <div className="relative flex items-center space-x-4 justify-center">
+                <img
+                  src={googleLogo}
+                  className="absolute left-0 w-5"
+                  alt="google logo"
+                />
+                <span className="block w-max font-semibold tracking-wide text-white text-sm transition duration-300 sm:text-base">
+                  Continue with Google
+                </span>
+              </div>
+            </button>
+          )}
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+          cookiePolicy={"single_host_origin"}
+          isSignedIn={true}
+        /> */}
+
         <button className="group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 group-hover:text-purple-400 focus:bg-purple-50 active:bg-purple-100">
           <div className="relative flex items-center space-x-4 justify-center">
             <svg

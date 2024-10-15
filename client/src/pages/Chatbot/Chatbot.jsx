@@ -12,6 +12,7 @@ import { RiCrosshair2Line } from "react-icons/ri";
 import { MdOutlineTrendingUp } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import { useState } from "react";
+import { logo } from "../../utils";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -75,11 +76,7 @@ Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdie
       </div>
       <div className="container">
         <div className="">
-          <img
-            className="logo"
-            src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Flogo-rayLabs3.png?alt=media&token=6ffa96d9-d1ec-449e-9cba-10c3f3d9a182"
-            alt="RayLabs Logo"
-          />
+          <img className="logo" src={logo} alt="RayLabs Logo" />
         </div>
         <div className="w-full overflow-auto scroll-container mb-[70px]">
           <div className="header">
