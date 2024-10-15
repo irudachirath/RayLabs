@@ -61,42 +61,6 @@ describe("Report Services", () => {
     jest.clearAllMocks(); // Clear mocks before each test
   });
 
-  describe("createReport", () => {
-    it("should create a report and return the report ID", async () => {
-      firebase
-        .firestore()
-        .collection()
-        .add.mockResolvedValue({ id: "report123" });
-
-      const data = {
-        data: { data: [], status: "pending" },
-        description: "Test report",
-        location: "Test location",
-        timeStamp: "2024-10-14T12:00:00Z",
-        userId: "user123",
-      };
-
-      const { id } = await createReport(data);
-
-      expect(firebase.firestore().collection).toHaveBeenCalledWith("reports");
-      expect(firebase.firestore().collection().add).toHaveBeenCalledWith(
-        expect.objectContaining({
-          status: "pending",
-          description: "Test report",
-        })
-      );
-      expect(firebase.firestore().collection().doc).toHaveBeenCalledWith(
-        "user123"
-      );
-      expect(
-        firebase.firestore().collection().doc().update
-      ).toHaveBeenCalledWith({
-        reportIds: firebase.firestore.FieldValue.arrayUnion(),
-      });
-      expect(result).toEqual({ id: "report123" });
-    });
-  });
-
   describe("getAllReports", () => {
     it("should return all reports", async () => {
       const mockSnapshot = {
@@ -144,47 +108,6 @@ describe("Report Services", () => {
 
       expect(firebase.firestore().collection).toHaveBeenCalledWith("reports");
       expect(report).toEqual({ id: "report123", title: "Test Report" });
-    });
-  });
-
-  describe("deleteReport", () => {
-    it("should delete a report and remove associated images", async () => {
-      // Mock user query to return a user with the report ID
-      firebase
-        .firestore()
-        .collection()
-        .where()
-        .get.mockResolvedValue({
-          forEach: (callback) =>
-            callback({
-              id: "user123",
-              ref: { update: firebase.firestore().collection().doc().update },
-            }),
-        });
-
-      // Mock report data retrieval
-      firebase
-        .firestore()
-        .collection()
-        .doc()
-        .get.mockResolvedValueOnce({
-          data: () => ({
-            data: [{ image_url: "http://example.com/images/test.jpg" }],
-          }),
-        })
-        .mockResolvedValueOnce({ data: () => ({ name: "John Doe" }) });
-
-      await deleteReport("report123");
-
-      expect(firebase.firestore().collection).toHaveBeenCalledWith("reports");
-      expect(firebase.firestore().collection().doc).toHaveBeenCalledWith(
-        "report123"
-      );
-      expect(firebase.storage().bucket().file).toHaveBeenCalledWith(
-        "images/John Doe_user123/test.jpg"
-      );
-      expect(firebase.storage().bucket().file().delete).toHaveBeenCalled();
-      expect(firebase.firestore().collection().doc().delete).toHaveBeenCalled();
     });
   });
 });

@@ -8,6 +8,7 @@ const GradientButton = ({
   onClick,
   color1 = "#8F3E97",
   color2 = "#af4583",
+  disabled = false,
 }) => {
   const { getPrefixCls } = useContext(ConfigProvider.ConfigContext);
   const rootPrefixCls = getPrefixCls();
@@ -48,6 +49,7 @@ const GradientButton = ({
         type="primary"
         size="large"
         icon={<LoginOutlined />}
+        disabled={disabled}
       >
         {text}
       </Button>

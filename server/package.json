@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This is the server of medilabs (medical diagnosis assistant) application that integrates with Firebase Realtime Database.",
   "main": "index.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "test": "jest",
     "start": "node index.js",
