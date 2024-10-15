@@ -8,6 +8,7 @@ import {
   FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { logo } from "../../utils";
 
 function Footer() {
   const [email, setEmail] = useState("");
@@ -39,11 +40,7 @@ function Footer() {
       </div>
       <div className="flex justify-between items-center px-20 pt-8">
         <div className="w-1/5 flex flex-col items-start gap-4">
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Flogo-rayLabs3.png?alt=media&token=6ffa96d9-d1ec-449e-9cba-10c3f3d9a182"
-            alt="RayLabs Logo"
-            className="w-3/5 h-auto"
-          />
+          <img src={logo} alt="RayLabs Logo" className="w-3/5 h-auto" />
           <p className="w-4/5 text-base text-white text-left">
             One Step Solution for all your medical needs
           </p>

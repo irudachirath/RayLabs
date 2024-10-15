@@ -1,13 +1,14 @@
 import React from "react";
 import { HiArrowLongRight } from "react-icons/hi2";
 import { Link } from "react-scroll";
+import { hero_homepage } from "../../../utils";
 
 const Title = () => {
   return (
     <>
       <div className="relative w-full h-full">
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Fbg_image.png?alt=media&token=516d4cd3-edb6-44ec-9098-27c36fdc1087"
+          src={hero_homepage}
           alt="bg_image"
           className="w-full h-screen object-cover"
         />

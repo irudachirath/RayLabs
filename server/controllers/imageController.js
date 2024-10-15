@@ -16,11 +16,14 @@ const uploadImages = async (req, res) => {
       }
 
       const uploadPromises = files.image.map(async (file) => {
+        // Get file path
         const filePath = file.filepath;
-        const fileName = file.originalFilename;
-
+        // file name + timestamp
+        const fileName = `${Date.now()}-${file.originalFilename}`;
+        // Extract userId from fields
+        const userId = fields.userId;
         // Upload image and get URL
-        return await imageServices.uploadImage(filePath, fileName);
+        return await imageServices.uploadImage(filePath, fileName, ...userId);
       });
 
       const imageUrls = await Promise.all(uploadPromises);

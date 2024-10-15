@@ -1,20 +1,18 @@
 import React from "react";
 import {
-  AppstoreOutlined,
   BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  HistoryOutlined,
+  InboxOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme, ConfigProvider } from "antd";
 import Navbar from "../../components/Navbar/Navbar";
 import TableTemplete from "../../components/Table/TableTemplete";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
+
 const siderStyle = {
+  paddingTop: "20px",
   overflow: "auto",
   height: "calc(100vh - 70px)",
   position: "fixed",
@@ -31,19 +29,33 @@ const menuStyle = {
   // make the selected item bg color red
 };
 
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-].map((icon, index) => ({
+const menuItemStyle = {
+  marginBottom: "15px", // Adjust as needed
+};
+
+const sliderData = [
+  {
+    icon: BarChartOutlined,
+    lable: "User Dashboard",
+  },
+  {
+    icon: HistoryOutlined,
+    lable: "User History",
+  },
+  {
+    icon: InboxOutlined,
+    lable: "Past Reviews",
+  },
+  {
+    icon: UserOutlined,
+    lable: "User Profile",
+  },
+];
+
+const items = sliderData.map((data, index) => ({
   key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
+  icon: React.createElement(data.icon),
+  label: `${data.lable}`,
 }));
 
 const UserHistory = () => {
@@ -67,7 +79,7 @@ const UserHistory = () => {
             mode="inline"
             style={menuStyle}
             defaultSelectedKeys={["4"]}
-            items={items}
+            items={items.map((item) => ({ ...item, style: menuItemStyle }))}
           />
         </Sider>
         <Layout
@@ -96,9 +108,6 @@ const UserHistory = () => {
               User History
             </h1>
             <TableTemplete />
-            {/* <div className="my-2 bg-white rounded-xl border-[2px] border-[#903e97a7] shadow-[0_0_15px_4px_rgba(143,62,151,0.5)]">
-              <TableTemplete />
-            </div> */}
           </Content>
         </Layout>
       </Layout>

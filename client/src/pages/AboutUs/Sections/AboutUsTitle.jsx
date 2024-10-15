@@ -1,11 +1,12 @@
 import React from "react";
+import { hero_aboutus } from "../../../utils";
 
 const AboutUsTitle = () => {
   return (
     <>
       <div className="relative w-full h-full">
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/AboutUs%20page%2F360_F_819531041_9ziyokGErhTXg6Nsrkj7mm95gxnNv80S%20(1).png?alt=media&token=4e7fb252-b38b-4360-8c43-ab88dd5cf6ef"
+          src={hero_aboutus}
           alt="bg_image"
           className="w-full h-[600px] object-cover object-bottom"
         />

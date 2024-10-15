@@ -11,9 +11,12 @@ import {
 import axios from "axios";
 import ImageInput from "./ImageInput";
 import LoadingButton from "../../components/Buttons/LoadingButton";
-import { set } from "@ant-design/plots/es/core/utils";
+import toast from "react-hot-toast";
+import { logo } from "../../utils";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
 
 const ImageInputReport = () => {
+  const userId = "VIFU4wZqem8HJd9bAIlc";
   const [uploadedImages, setUploadedImages] = useState([null]);
   const [updatedImageLinks, setUpdatedImageLinks] = useState();
   const [btnVisible, setBtnVisible] = useState(true);
@@ -22,6 +25,7 @@ const ImageInputReport = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [imageResults, setImageResults] = useState(null);
+  const [reportId, setReportId] = useState(null);
 
   const handleImageChange = (event, index) => {
     const file = event.target.files[0];
@@ -47,21 +51,23 @@ const ImageInputReport = () => {
         setBtnVisible(false);
       }
     } else {
-      alert(
-        "Please upload an image in the last field before adding a new one."
-      );
+      toast.error("Please upload the current image before adding a new one.");
     }
   };
 
   const handleImageUpload = () => {
     if (uploadedImages.every((image) => image == null)) {
-      alert("Please select at least one image to upload.");
+      toast.error("Please choose at least one image to upload.");
       return;
     }
     const formData = new FormData();
     uploadedImages.forEach((image, index) => {
       if (image) formData.append(`image`, image);
     });
+
+    //Append the userId to the form data
+    formData.append("userId", userId);
+
     setLoading(true);
     axios
       .post("http://localhost:5000/api/v1/images/upload", formData, {
@@ -73,6 +79,7 @@ const ImageInputReport = () => {
         setUpdatedImageLinks(response.data.imageUrls);
         setLoading(false);
         setUploadSuccess(true);
+        toast.success("Images uploaded successfully.");
       })
       .catch((error) => {
         setLoading(false);
@@ -80,14 +87,32 @@ const ImageInputReport = () => {
       });
   };
 
+  const handleReportSave = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/reports",
+        {
+          userId: userId,
+          data: data,
+          description: "Image analysis report",
+          location: "Unknown",
+          timeStamp: new Date().toISOString(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmit = async () => {
-    setSubmitLoading(true);
     if (!updatedImageLinks || updatedImageLinks.length === 0) {
-      alert("Please upload images before submitting.");
+      toast.error("Please upload images before submitting.");
       return;
     }
 
     try {
+      setSubmitLoading(true);
       const response = await axios.post(
         "http://localhost:8000/model/api/v1/predict/",
         {
@@ -96,10 +121,21 @@ const ImageInputReport = () => {
       );
       setImageResults(response.data); // Set the response data directly
       setSubmitLoading(false);
+      toast.success("Images submitted for analysis successfully.");
+      const id = await handleReportSave(response.data);
+      setReportId(id);
+      toast.success("Report saved successfully.");
     } catch (error) {
       console.error(error);
-      alert("Error submitting report.");
+      setSubmitLoading(false);
+      toast.error("Error submitting the images for analysis.");
     }
+  };
+
+  const handleReport = () => {
+    const id = reportId.id; // Replace with the actual ID
+    const url = `/report/${id}`;
+    window.open(url, "_blank");
   };
 
   return (
@@ -132,11 +168,7 @@ const ImageInputReport = () => {
       </div>
       <div className="container">
         <div className="">
-          <img
-            className="logo"
-            src="https://firebasestorage.googleapis.com/v0/b/raylabs-804be.appspot.com/o/Landing%20Page%2Flogo-rayLabs3.png?alt=media&token=6ffa96d9-d1ec-449e-9cba-10c3f3d9a182"
-            alt="RayLabs Logo"
-          />
+          <img className="logo" src={logo} alt="RayLabs Logo" />
         </div>
         <div className="scroll-container">
           <div className="header">
@@ -153,7 +185,6 @@ const ImageInputReport = () => {
             </p>
           </div>
           <div className="image-upload">
-            {console.log(imageResults)}
             {imageFields.map((index) => (
               <div key={index}>
                 <ImageInput
@@ -182,11 +213,16 @@ const ImageInputReport = () => {
           </div>
         </div>
         <div className="fixed bottom-[10px] w-2/3 py-3">
-          <LoadingButton
-            onClick={handleSubmit}
-            loading={submitLoading}
-            text="Submit"
-          />
+          <div className="flex justify-center gap-4">
+            <LoadingButton
+              onClick={handleSubmit}
+              loading={submitLoading}
+              text="Submit"
+            />
+            {reportId && (
+              <LoadingButton text="View Report" onClick={handleReport} />
+            )}
+          </div>
         </div>
       </div>
     </div>
