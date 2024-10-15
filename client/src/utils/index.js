@@ -1,21 +1,21 @@
 export const logo =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/landing_page%2Flogo-rayLabs3.png?alt=media&token=4e0a596c-6bb3-48f2-8b72-577d67094656";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/landing_page%2Flogo_rayLabs.webp?alt=media&token=15e9e3e9-8bea-443b-b4b4-6096bf1c3adc";
 export const hero_homepage =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/landing_page%2Fbg_image.png?alt=media&token=28a7c2e4-567c-4304-bdc4-f637bb74333c";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/landing_page%2Fhero_image.webp?alt=media&token=6f111cf1-419a-4383-ab86-1720281453b5";
 
 export const hero_aboutus =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2F360_F_819531041_9ziyokGErhTXg6Nsrkj7mm95gxnNv80S%20(1).png?alt=media&token=f20360f8-dda4-44e0-9bc3-ef8e21b06869";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Fabout_us_hero_image.webp?alt=media&token=dcae7a60-01a5-4c3d-a73e-75d60a81bd22";
 export const mission =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Fgetty_501539900_112940.jpg?alt=media&token=2052e879-f4bc-4f58-ab07-5b382c9d4c7a";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Four_mission_image.webp?alt=media&token=a9573f21-50bf-4377-af1d-5f09cc6daa04";
 export const whoWeAre =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Fteamwork_collaboration_developers_development_engineers_binary_code_virtual_interface_by_dean_mitchell_gettyimages-1055056834_2400x1600-100802360-large.webp?alt=media&token=37ead535-d42a-4bbc-9d2e-c0ff3f6ca1b3";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Fwho_we_are_image.webp?alt=media&token=fdbb1afc-aea0-46e5-95c8-a0946425ba62";
 export const whatWeDo =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Fdoctor-looks-at-imaging-exam-results-on-ipad.webp?alt=media&token=41ccf21b-9c19-4166-9c6c-b8ec4d324566";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Fwhat_we_do_image.webp?alt=media&token=9a1d5c3b-dc7e-49be-8a15-7a072fe736b6";
 export const ourTechnology =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2F1525767455777.png?alt=media&token=630539ef-bc49-48f5-84c1-8f03a60a9142";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/about_us_page%2Four_technology_image.webp?alt=media&token=f5ed6e9a-1026-4e25-9b2c-7c864979a1e2";
 
 export const placeholder =
-  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/image_input_page%2Fplaceholder.png?alt=media&token=36f9f22f-7042-41c2-a060-7290d63ae94b";
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/image_input_page%2Fplaceholder.webp?alt=media&token=6146e17d-f6d6-4ea5-b183-d3c5a4fbddcf";
 
 export const googleLogo =
   "https://www.svgrepo.com/show/475656/google-color.svg";

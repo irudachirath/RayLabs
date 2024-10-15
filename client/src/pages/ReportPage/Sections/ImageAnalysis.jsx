@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Graph from "../../../components/Graphs/Graph";
+import Gallery from "../../../components/Gallery/Gallery";
 import { Spin } from "antd";
 
 const MultiColumnGraph = ({ results }) => {
   const height = 350 + 100 * results.data.length;
   const getImagePred = (preds) => {
     const imagePred = {};
-    console.log(preds);
     preds["prediction"].map((pred) => {
       imagePred[pred.disease] = pred.sigmoid_value.toFixed(3);
     });
-    console.log(imagePred);
     return imagePred;
   };
 
@@ -75,6 +74,23 @@ const ImageAnalysis = ({ report, loading }) => {
       <h1 className="text-xl text-start pb-2 mt-5 font-semibold text-white">
         Image Analysis
       </h1>
+
+      <div className={`w-full h-fit mt-2 p-4 ${cardStyle}`}>
+        <>
+          {loading ? (
+            <span className="mr-2 my-auto">
+              <Spin style={{ color: "#ffffff" }} />
+            </span>
+          ) : (
+            <>
+              <MultiColumnGraph results={report} />
+              <h1 className="text-lg text-white font-semibold text-center my-2">
+                Image Probabilities for each Disease
+              </h1>
+            </>
+          )}
+        </>
+      </div>
       <div className="flex justify-center gap-3">
         <div className={`w-1/2 p-2 py-4 ${cardStyle}`}>
           <>
@@ -101,27 +117,24 @@ const ImageAnalysis = ({ report, loading }) => {
                   <Spin style={{ color: "#ffffff" }} />
                 </span>
               ) : (
-                <></>
+                <>
+                  <Gallery
+                    imagesProp={report.data.map((d, index) => {
+                      return {
+                        imageSrc: d.image_url,
+                        thumbnailImageSrc: d.image_url,
+                        alt: `image_${index + 1}`,
+                      };
+                    })}
+                  />
+                  <h1 className="text-lg text-white font-semibold text-center mb-2">
+                    Likelihood Map of Pathologies
+                  </h1>
+                </>
               )}
             </>
           </div>
         </div>
-      </div>
-      <div className={`w-full h-fit mt-2 p-4 ${cardStyle}`}>
-        <>
-          {loading ? (
-            <span className="mr-2 my-auto">
-              <Spin style={{ color: "#ffffff" }} />
-            </span>
-          ) : (
-            <>
-              <MultiColumnGraph results={report} />
-              <h1 className="text-lg text-white font-semibold text-center mb-2">
-                Image Probabilities for each Disease
-              </h1>
-            </>
-          )}
-        </>
       </div>
     </>
   );

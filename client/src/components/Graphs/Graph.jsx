@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const Graph = ({ results, series, height = 350, horizontal = true }) => {
-  console.log(results);
   const [chartOptions, setChartOptions] = useState({
     chart: {
       type: "bar",
@@ -14,15 +13,21 @@ const Graph = ({ results, series, height = 350, horizontal = true }) => {
         horizontal: horizontal, // This line makes the chart horizontal
       },
     },
-    colors: ["#8f3e97"],
     fill: {
+      colors: ["#cf45a3", "#af3eb7", "#8f36db", "#6a2fef", "#2f47fd"],
       type: "gradient",
       gradient: {
         shade: "dark",
         type: horizontal ? "horizontal" : "vertical",
         shadeIntensity: 0.5,
-        gradientToColors: ["#af4583", "#8f0097"],
-        inverseColors: true,
+        gradientToColors: [
+          "#8f36bb",
+          "#6f3e77",
+          "#4f368b",
+          "#2f2f7f",
+          "#4f27bf",
+        ],
+        inverseColors: horizontal ? true : false,
         opacityFrom: 1,
         opacityTo: 1,
         stops: [0, 100],
@@ -31,7 +36,7 @@ const Graph = ({ results, series, height = 350, horizontal = true }) => {
     stroke: {
       show: true,
       width: 1,
-      colors: ["#bbbbbb83"], // This line makes the lines between bars grey
+      colors: ["#ffffff20"], // This line makes the lines between bars grey
     },
     grid: {
       borderColor: "#bbbbbb83", // This line makes the grid lines grey
@@ -60,36 +65,55 @@ const Graph = ({ results, series, height = 350, horizontal = true }) => {
         },
       },
     },
-    annotations: {
-      xaxis: [
-        {
-          x: 0.5,
-          strokeDashArray: 0,
+    annotations: {},
+  });
+
+  if (horizontal) {
+    chartOptions.annotations.xaxis = [
+      {
+        x: 0.5,
+        strokeDashArray: 0,
+        borderColor: "#ff0000",
+        label: {
           borderColor: "#ff0000",
-          label: {
-            borderColor: "#ff0000",
-            style: {
-              color: "#fff",
-              background: "#ff0000",
-            },
+          style: {
+            color: "#fff",
+            background: "#ff0000",
           },
         },
-      ],
-    },
-  });
+      },
+    ];
+  } else {
+    chartOptions.annotations.yaxis = [
+      {
+        y: 0.5,
+        strokeDashArray: 0,
+        borderColor: "#ff0000",
+        label: {
+          borderColor: "#ff0000",
+          style: {
+            color: "#fff",
+            background: "#ff0000",
+          },
+        },
+      },
+    ];
+  }
 
   useEffect(() => {
     setChartOptions((prevOptions) => ({
       ...prevOptions,
-      colors: [
-        function ({ value, seriesIndex, w }) {
-          if (value > 0.5) {
-            return "#ff0000";
-          } else {
-            return "#8f3e97";
-          }
-        },
-      ],
+      fill: {
+        colors: [
+          function ({ value, seriesIndex, w }) {
+            if (value > 0.5) {
+              return "#ff0000";
+            } else {
+              return "#8f3e97";
+            }
+          },
+        ],
+      },
     }));
   }, [results]);
 

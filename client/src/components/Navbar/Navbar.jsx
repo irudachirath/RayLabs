@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import PrimaryButton from "../Buttons/PrimaryButton";
 import NavListElement from "./NavListElement";
 import ModalTemplete from "../Modals/ModalTemplete";
 import Login from "../../pages/Login/Login";
+import Logout from "../../pages/Login/Logout";
 import { logo } from "../../utils";
 
 const Navbar = ({ isBlured = true }) => {
+  const clientId =
+    "317549661140-kur4aa93oi628jqfo91qrgqkm5rtjcsr.apps.googleusercontent.com";
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // useEffect(() => {
+  //   gapi.load("auth2", function () {
+  //     gapi.auth2.init({
+  //       client_id: clientId,
+  //       scope: "",
+  //     });
+  //   });
+  // }, []);
 
   return (
     <header className={`w-full h-[70px] fixed top-0 left-0 z-10`}>
@@ -29,28 +40,26 @@ const Navbar = ({ isBlured = true }) => {
             <NavListElement link="/help" text="How we Work" />
             <NavListElement link="/about" text="About" />
             <li>
-              {isLoggedIn ? (
-                <div className="h-9 w-full">
-                  <PrimaryButton
-                    text="Logout"
-                    className="px-6"
-                    removeTranslate={true}
-                  />
-                </div>
-              ) : (
-                <div className="h-9 w-full">
-                  <ModalTemplete
-                    text={
-                      isLoginPage ? "Register as a User" : "Login as a User"
-                    }
-                    content={
-                      <div>
-                        <Login />
-                      </div>
-                    }
-                  />
-                </div>
-              )}
+              <div className="h-9 w-full">
+                <ModalTemplete
+                  text={
+                    !isLoggedIn
+                      ? isLoginPage
+                        ? "Register as a User"
+                        : "Login as a User"
+                      : "Logout"
+                  }
+                  content={
+                    <div>
+                      {!isLoggedIn ? (
+                        <Login setIsLoggedIn={setIsLoggedIn} />
+                      ) : (
+                        <Logout setIsLoggedIn={setIsLoggedIn} />
+                      )}
+                    </div>
+                  }
+                />
+              </div>
             </li>
           </ul>
         </nav>
