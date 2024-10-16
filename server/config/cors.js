@@ -1,5 +1,5 @@
 const corsConfig = {
-  origin: true,
+  origin: "https://ray-labs.vercel.app",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };

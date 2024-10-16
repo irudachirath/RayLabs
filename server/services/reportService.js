@@ -37,17 +37,33 @@ module.exports.getAllReports = async () => {
 module.exports.getReportIdsByUserId = async (userId) => {
   const userRef = db.collection("users").doc(userId);
   const user = await userRef.get();
+  if (!user.exists) {
+    const error = new Error("User not found");
+    error.status = 404;
+    throw error;
+  }
   return user.data().reportIds;
 };
 
 module.exports.getReportById = async (reportId) => {
   const reportRef = db.collection("reports").doc(reportId);
   const report = await reportRef.get();
+  // throw an error if the report does not exist and send a 404 status code
+  if (!report.exists) {
+    const error = new Error("Report not found");
+    error.status = 404;
+    throw error;
+  }
   return { id: report.id, ...report.data() };
 };
 
 module.exports.deleteReport = async (reportId) => {
   const reportRef = db.collection("reports").doc(reportId);
+  if (!(await reportRef.get()).exists) {
+    const error = new Error("Report not found");
+    error.status = 404;
+    throw error;
+  }
   let userId;
 
   // delete the report ID from the user's reportIds array
