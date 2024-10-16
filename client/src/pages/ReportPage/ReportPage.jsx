@@ -70,7 +70,7 @@ const ReportPage = () => {
     try {
       setLoading(true); // Start loading
       const response = await axios.get(
-        `http://localhost:5000/api/v1/reports/report/${id}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/reports/report/${id}`
       );
       await setReport(response.data);
     } catch (error) {

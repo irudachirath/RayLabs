@@ -70,11 +70,15 @@ const ImageInputReport = () => {
 
     setLoading(true);
     axios
-      .post("http://localhost:5000/api/v1/images/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/images/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         setUpdatedImageLinks(response.data.imageUrls);
         setLoading(false);
@@ -90,7 +94,7 @@ const ImageInputReport = () => {
   const handleReportSave = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/reports",
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/reports`,
         {
           userId: userId,
           data: data,

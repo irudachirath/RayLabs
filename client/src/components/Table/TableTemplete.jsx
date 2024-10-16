@@ -15,7 +15,7 @@ const TableTemplete = () => {
   const handleReportRemove = async (id, userId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/v1/reports/${id}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/reports/${id}`
       );
       toast.success("Report removed successfully");
       fetchData();
@@ -117,11 +117,13 @@ const TableTemplete = () => {
     },
   });
 
-  // fetch data from this http://localhost:5000/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc
+  // fetch data from this ${import.meta.env.VITE_API_BASE_URL}/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc
   const fetchData = () => {
     setLoading(true);
     fetch(
-      `http://localhost:5000/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc?${qs.stringify(
+      `${
+        import.meta.env.VITE_API_BASE_URL
+      }/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc?${qs.stringify(
         getRandomuserParams(tableParams)
       )}`
     )
