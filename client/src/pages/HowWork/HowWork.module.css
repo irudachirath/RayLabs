@@ -1,0 +1,19 @@
+.timelineCustom {
+  color: white;
+}
+
+.timelineCustom .ant-timeline-item-head {
+  border-color: white !important;
+}
+
+.timelineCustom .ant-timeline-item-tail {
+  border-left-color: white !important;
+}
+
+.timelineCustom .ant-timeline-item-content {
+  color: white !important; 
+}
+
+.timelineCustom .ant-timeline-item-content > * {
+  color: white !important; 
+}

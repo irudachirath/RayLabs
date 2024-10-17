@@ -20,7 +20,7 @@ function Footer() {
   };
 
   return (
-    <footer className="w-full bg-[#222222] box-border">
+    <footer className="w-full bg-[#222222] box-border mt-6">
       <div className="flex items-center w-full h-14 bg-[#8F3E97] text-white">
         <h2 className="w-1/2 text-lg text-left pl-14 tracking-widest font-semibold">
           Talk to our Customer support for assistance

@@ -9,6 +9,7 @@ import Chatbot from "./pages/Chatbot/Chatbot";
 import ImageInputReport from "./pages/ImageInputReport/ImageInputReport";
 import UserHistory from "./pages/UserHistory/UserHistory";
 import AboutUs from "./pages/AboutUs/AboutUs";
+import HowWork from "./pages/HowWork/HowWork";
 import ReportPage from "./pages/ReportPage/ReportPage";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/image-input-report" element={<ImageInputReport />} />
           <Route path="/user-history" element={<UserHistory />} />
+          <Route path="/help" element={<HowWork/>}/>
           <Route path="/about" element={<AboutUs />} />
           <Route path="/report/:id" element={<ReportPage />} />
         </Routes>

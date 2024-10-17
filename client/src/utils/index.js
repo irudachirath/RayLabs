@@ -17,6 +17,24 @@ export const ourTechnology =
 export const placeholder =
   "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/image_input_page%2Fplaceholder.webp?alt=media&token=6146e17d-f6d6-4ea5-b183-d3c5a4fbddcf";
 
+export const howWeWork_landingPage = 
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/how_we_work%2FLanding%20page%20editted.png?alt=media&token=dde67af3-e81c-44b1-a1b6-0856ed079a87"
+
+export const howWeWork_inputImage = 
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/how_we_work%2FImage%20input%20page%20editted.png?alt=media&token=27fe6d5f-c05a-4eaa-96e2-ac52acc97ba5"
+
+export const howWeWork_inputImage2 =
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/how_we_work%2Finput%202%20editted.png?alt=media&token=84765a9e-7500-4475-a61d-7cc796b37770"
+
+export const howWeWork_inputImage3 =
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/how_we_work%2Finput%203%20editted.png?alt=media&token=b30e3739-b1a1-41b8-b192-aa43c4038e73"
+
+export const submitted =
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/how_we_work%2Fsubmit%20editted.png?alt=media&token=e5bcdf00-84df-4f8d-b314-bc227ec20cc1"
+
+export const uploaded =
+  "https://firebasestorage.googleapis.com/v0/b/raylabs-26d1c.appspot.com/o/how_we_work%2Fupload%20editted.png?alt=media&token=51cb0ef9-1cc9-45be-a7c5-84257677804b"
+
 export const googleLogo =
   "https://www.svgrepo.com/show/475656/google-color.svg";
 
