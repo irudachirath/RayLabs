@@ -5,6 +5,7 @@ const db = admin.firestore();
 module.exports.uploadImage = async (filePath, fileName, userId) => {
   const userRef = db.collection("users").doc(userId);
   const user = await userRef.get();
+  console.log(user);
   if (!user.exists) {
     throw new Error("User not found");
   }

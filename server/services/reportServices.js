@@ -42,6 +42,7 @@ module.exports.getReportIdsByUserId = async (userId) => {
     error.status = 404;
     throw error;
   }
+  console.log(user.data().reportIds);
   return user.data().reportIds;
 };
 

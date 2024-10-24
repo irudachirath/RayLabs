@@ -22,6 +22,7 @@ const uploadImages = async (req, res) => {
         const fileName = `${Date.now()}-${file.originalFilename}`;
         // Extract userId from fields
         const userId = fields.userId;
+        console.log("userId", ...userId);
         // Upload image and get URL
         return await imageServices.uploadImage(filePath, fileName, ...userId);
       });
