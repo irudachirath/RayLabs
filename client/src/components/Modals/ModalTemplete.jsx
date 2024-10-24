@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import GradientButton from "../Buttons/GradientButton";
 
-const ModalTemplete = ({ text, content }) => {
+const ModalTemplete = ({ text, content, close = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -13,6 +13,9 @@ const ModalTemplete = ({ text, content }) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  if (close) {
+    setIsModalOpen(false);
+  }
   return (
     <>
       <GradientButton onClick={showModal} text={text} />

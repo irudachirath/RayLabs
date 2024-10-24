@@ -1,48 +1,118 @@
+import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
-import {
-  FaUserCircle,
-  FaTrashAlt,
-  FaSun,
-  FaGem,
-  FaQuestionCircle,
-  FaPowerOff,
-} from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
 import { RiCrosshair2Line } from "react-icons/ri";
 import { MdOutlineTrendingUp } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
-import { useState } from "react";
 import { logo } from "../../utils";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import { jwtDecode } from "jwt-decode";
+import MarkdownText from "../../components/MarkdownText/MarkdownText";
+import DotsLoader from "../../components/DotsLoader/DotsLoader";
+import ChatHistory from "./ChatHistory";
 
 const Chatbot = () => {
+  const [isChatStarted, setIsChatStarted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const { chatId } = useParams();
+  const navigate = useNavigate();
+  const messagesEndRef = useRef(null);
+
+  // Function to get and decode cookie
+  const getCookie = (name) => {
+    const cookieArr = document.cookie.split("; ");
+    const cookie = cookieArr.find((row) => row.startsWith(`${name}=`));
+    if (cookie) {
+      const value = cookie.split("=")[1];
+      return decodeURIComponent(value); // Decode the URL-encoded string
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    if (chatId) {
+      setIsChatStarted(true);
+      loadChat(chatId);
+    }
+  }, [chatId]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  const startNewChat = async () => {
+    try {
+      const accessToken = await document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("accessToken="))
+        .split("=")[1];
+      const decodedToken = await jwtDecode(accessToken);
+      const response = await axios.post(
+        `
+        ${import.meta.env.VITE_API_BASE_URL}/api/v1/chats`,
+        { userId: decodedToken.user.id }
+      );
+      const newChatId = response.data.id;
+      navigate(`/chatbot/${newChatId}`);
+    } catch (error) {
+      console.error("Failed to start new chat:", error);
+    }
+  };
+
+  const loadChat = async (chatId) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/chats/${chatId}`
+      );
+      const chatData = [];
+      response.data.messages.map(
+        (message) => (
+          chatData.push({ text: message.user, sender: "user" }),
+          chatData.push({ text: message.assistant, sender: "bot" })
+        )
+      );
+      setMessages(chatData || []); // Fallback to an empty array
+    } catch (error) {
+      console.error("Failed to load chat:", error);
+      setMessages([]); // Set empty array in case of error
+    }
+  };
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (input.trim()) {
-      setMessages([...messages, { text: input, sender: "user" }]);
+      setIsLoading(true);
+      if (input === "") {
+        toast.error("Input cannot be empty.");
+        return;
+      }
+      const inputHolder = input;
       setInput(""); // Clear input after sending
-
-      // Simulate a bot response
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-
-Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-
-Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-
-Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.`,
-            sender: "bot",
-          },
-        ]);
-      }, 1000); // Delayed response
+      setMessages([...messages, { text: input, sender: "user" }]);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/chats/${chatId}`,
+        {
+          message: inputHolder,
+        }
+      );
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: response.data,
+          sender: "bot",
+        },
+      ]);
+      setIsLoading(false);
     }
   };
 
@@ -50,78 +120,106 @@ Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdie
     <div className="main-grid">
       <div className="container-sidebar">
         <div className="account-info">
-          <FaUserCircle className="profile-icon" />
-          <div>
-            <div className="account-name">Antoine Piedanna</div>
+          <img
+            className="w-10 h-10 bg-red-500 rounded-full"
+            src={getCookie("picture")}
+            alt="User"
+          />
+          <div className="pl-2 flex flex-col justify-start items-start">
+            <div className="account-name">
+              {getCookie("username") &&
+                getCookie("username")[0].toUpperCase() +
+                  getCookie("username").slice(1)}
+            </div>
             <div className="account-type">Free account</div>
           </div>
         </div>
         <div className="w-full">
-          <button className="new-chat-btn">+ Start a new chat</button>
-          <div className="settings">
-            {[
-              { icon: FaTrashAlt, text: "Clear all conversations" },
-              { icon: FaSun, text: "Switch Light Mode" },
-              { icon: FaGem, text: "Upgrade to GPT Pro" },
-              { icon: FaQuestionCircle, text: "Updates & FAQ" },
-              { icon: FaPowerOff, text: "Log out" },
-            ].map((item, index) => (
-              <div key={index} className="settings-item tracking-wider">
-                <item.icon className="icon" />
-                {item.text}
-              </div>
-            ))}
+          <Link to="/chatbot" target="_blank">
+            <button className="new-chat-btn">+ Start a new chat</button>
+          </Link>
+          <div>
+            <ChatHistory ContainerHeight={450} />
+          </div>
+          <div className="settings mt-3">
+            <div className="settings-item tracking-wider">
+              <FaTrashAlt className="icon" />
+              Clear all conversations
+            </div>
           </div>
         </div>
       </div>
       <div className="container">
-        <div className="">
-          <img className="logo" src={logo} alt="RayLabs Logo" />
-        </div>
-        <div className="w-full overflow-auto scroll-container mb-[70px]">
-          <div className="header">
-            <div className="flex justify-center mb-2">
-              <div>
-                <h1 className="title">Chat With </h1>
-              </div>
-              <div className="bg-pink-gradient-secondary ml-2 px-2">
-                <h1 className="title">RayLabs</h1>
-              </div>
-            </div>
-            <p className="tagline">
-              The power of AI at your service - Tame the knowledge!
-            </p>
+        <Link to="/">
+          <div className="">
+            <img className="logo" src={logo} alt="RayLabs Logo" />
           </div>
-          <div className="features">
-            <div className="feature-box flex flex-col items-center justify-center">
-              <BsStars size="25" />
-              <h3>Clear and precise</h3>
-              <p>Pariatur sint laborum cillum aute consectetur irure.</p>
-            </div>
-            <div className="feature-box flex flex-col items-center justify-center">
-              <RiCrosshair2Line size="25" />
-              <h3>Personalized answers</h3>
-              <p>Pariatur sint laborum cillum aute consectetur irure.</p>
-            </div>
-            <div className="feature-box flex flex-col items-center justify-center">
-              <MdOutlineTrendingUp size="25" />
-              <h3>Increased efficiency</h3>
-              <p>Pariatur sint laborum cillum aute consectetur irure.</p>
-            </div>
-          </div>
-          <div className="messages">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`message ${
-                  message.sender === "user" ? "user-message" : "bot-message"
-                }`}
-              >
-                {message.text}
+        </Link>
+        {!isChatStarted ? (
+          <div className="w-full overflow-auto scroll-container mb-[70px]">
+            <div className="header">
+              <div className="flex justify-center mb-2">
+                <div>
+                  <h1 className="title">Chat With </h1>
+                </div>
+                <div className="bg-pink-gradient-secondary ml-2 px-2">
+                  <h1 className="title">RayLabs</h1>
+                </div>
               </div>
-            ))}
+              <p className="tagline">
+                The power of AI at your service - Tame the knowledge!
+              </p>
+            </div>
+            <div className="features">
+              <div className="feature-box flex flex-col items-center justify-center">
+                <BsStars size="25" />
+                <h3>Clear and precise</h3>
+                <p>Pariatur sint laborum cillum aute consectetur irure.</p>
+              </div>
+              <div className="feature-box flex flex-col items-center justify-center">
+                <RiCrosshair2Line size="25" />
+                <h3>Personalized answers</h3>
+                <p>Pariatur sint laborum cillum aute consectetur irure.</p>
+              </div>
+              <div className="feature-box flex flex-col items-center justify-center">
+                <MdOutlineTrendingUp size="25" />
+                <h3>Increased efficiency</h3>
+                <p>Pariatur sint laborum cillum aute consectetur irure.</p>
+              </div>
+            </div>
           </div>
-          <div className="fixed bottom-[10px] py-4 flex justify-center items-center">
+        ) : (
+          <div className="w-full h-full mt-14 overflow-auto scroll-container">
+            <div className="messages">
+              {messages &&
+                messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`message ${
+                      message.sender === "user" ? "user-message" : "bot-message"
+                    }`}
+                  >
+                    {message.sender === "bot" ? (
+                      <div className="markdown">
+                        <MarkdownText text={message.text} />
+                      </div>
+                    ) : (
+                      <p>{message.text}</p>
+                    )}
+                  </div>
+                ))}
+
+              {isLoading && (
+                <div className="message bot-message">
+                  <DotsLoader />
+                </div>
+              )}
+            </div>
+            <div ref={messagesEndRef} />
+          </div>
+        )}
+        <div className="fixed bottom-[10px] py-4 flex justify-center items-center">
+          {isChatStarted ? (
             <div className="chat-input">
               <input
                 type="text"
@@ -138,7 +236,14 @@ Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdie
                 <IoMdSend size="20" />
               </button>
             </div>
-          </div>
+          ) : (
+            <PrimaryButton
+              text="Start Chat"
+              onClick={async () => {
+                await startNewChat();
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

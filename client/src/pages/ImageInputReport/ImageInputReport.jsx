@@ -13,10 +13,9 @@ import ImageInput from "./ImageInput";
 import LoadingButton from "../../components/Buttons/LoadingButton";
 import toast from "react-hot-toast";
 import { logo } from "../../utils";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import { jwtDecode } from "jwt-decode";
 
 const ImageInputReport = () => {
-  const userId = "VIFU4wZqem8HJd9bAIlc";
   const [uploadedImages, setUploadedImages] = useState([null]);
   const [updatedImageLinks, setUpdatedImageLinks] = useState();
   const [btnVisible, setBtnVisible] = useState(true);
@@ -26,6 +25,19 @@ const ImageInputReport = () => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [imageResults, setImageResults] = useState(null);
   const [reportId, setReportId] = useState(null);
+
+  const getUserId = async () => {
+    try {
+      const accessToken = await document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("accessToken="))
+        .split("=")[1];
+      const decodedToken = await jwtDecode(accessToken);
+      return decodedToken.user.id;
+    } catch (error) {
+      throw new Error("Invalid access token or no access token provided.");
+    }
+  };
 
   const handleImageChange = (event, index) => {
     const file = event.target.files[0];
@@ -55,16 +67,17 @@ const ImageInputReport = () => {
     }
   };
 
-  const handleImageUpload = () => {
+  const handleImageUpload = async () => {
     if (uploadedImages.every((image) => image == null)) {
       toast.error("Please choose at least one image to upload.");
       return;
     }
     const formData = new FormData();
-    uploadedImages.forEach((image, index) => {
+    await uploadedImages.forEach((image, index) => {
       if (image) formData.append(`image`, image);
     });
 
+    const userId = await getUserId();
     //Append the userId to the form data
     formData.append("userId", userId);
 
@@ -93,6 +106,7 @@ const ImageInputReport = () => {
 
   const handleReportSave = async (data) => {
     try {
+      const userId = await getUserId();
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/reports`,
         {
@@ -118,7 +132,7 @@ const ImageInputReport = () => {
     try {
       setSubmitLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/model/api/v1/predict/",
+        `${import.meta.env.VITE_FASTAPI_BACKEND_URL}/model/api/v1/predict/`,
         {
           imageUrls: updatedImageLinks,
         }

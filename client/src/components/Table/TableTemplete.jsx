@@ -6,11 +6,24 @@ import { Image } from "antd";
 import { ExportOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
 
 const TableTemplete = () => {
-  const userId = "VIFU4wZqem8HJd9bAIlc";
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const getUserId = () => {
+    try {
+      const accessToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("accessToken="))
+        .split("=")[1];
+      const decodedToken = jwtDecode(accessToken);
+      return decodedToken.user.id;
+    } catch (error) {
+      throw new Error("Invalid access token or no access token provided.");
+    }
+  };
 
   const handleReportRemove = async (id, userId) => {
     try {
@@ -118,12 +131,13 @@ const TableTemplete = () => {
   });
 
   // fetch data from this ${import.meta.env.VITE_API_BASE_URL}/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc
-  const fetchData = () => {
+  const fetchData = async () => {
     setLoading(true);
+    const userId = await getUserId();
     fetch(
       `${
         import.meta.env.VITE_API_BASE_URL
-      }/api/v1/reports/user/VIFU4wZqem8HJd9bAIlc?${qs.stringify(
+      }/api/v1/reports/user/${userId}?${qs.stringify(
         getRandomuserParams(tableParams)
       )}`
     )
