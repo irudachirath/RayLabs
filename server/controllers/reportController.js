@@ -53,10 +53,20 @@ const deleteReport = async (req, res) => {
   }
 };
 
+const createTextReport = async (req, res) => {
+  try {
+    const report = await reportServices.createTextReport(req.params.id);
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getReports,
   createReport,
   deleteReport,
   getReportByUserId,
   getReportByReportId,
+  createTextReport,
 };
