@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Overview from "./Sections/Overview";
 import ImageAnalysis from "./Sections/ImageAnalysis";
+import TextAnalysis from "./Sections/TextAnalysis";
 
 const { Header, Content, Sider } = Layout;
 
@@ -39,18 +40,22 @@ const menuItemStyle = {
 const sliderData = [
   {
     icon: DashboardOutlined,
+    key: 1,
     label: "Overview",
   },
   {
     icon: FileImageOutlined,
+    key: 2,
     label: "Image Analysis",
   },
   {
     icon: FileTextOutlined,
-    label: "Text Analysis",
+    key: 3,
+    label: "Text Report",
   },
   {
     icon: InboxOutlined,
+    key: 4,
     label: "Report Details",
   },
 ];
@@ -61,10 +66,15 @@ const items = sliderData.map((data, index) => ({
   label: `${data.label}`,
 }));
 
-const ReportPage = () => {
+const ReportPage = ({ component }) => {
+  const [selectedMenuKey, setSelectedMenuKey] = useState("1"); // Default to "1" for Overview
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true); // State to track loading
   const { id } = useParams();
+
+  const handleMenuClick = (e) => {
+    setSelectedMenuKey(e.key);
+  };
 
   const fetchReport = async () => {
     try {
@@ -99,7 +109,8 @@ const ReportPage = () => {
             theme="dark"
             mode="inline"
             style={menuStyle}
-            defaultSelectedKeys={["1"]}
+            selectedKeys={[selectedMenuKey]}
+            onClick={handleMenuClick}
             items={items.map((item) => ({ ...item, style: menuItemStyle }))}
           />
         </Sider>
@@ -114,8 +125,15 @@ const ReportPage = () => {
               minHeight: "85vh",
             }}
           >
-            <Overview report={report} loading={loading} />
-            <ImageAnalysis report={report} loading={loading} />
+            {selectedMenuKey === "1" && (
+              <Overview report={report} loading={loading} />
+            )}
+            {selectedMenuKey === "2" && (
+              <ImageAnalysis report={report} loading={loading} />
+            )}
+            {selectedMenuKey === "3" && (
+              <TextAnalysis report={report} loading={loading} />
+            )}
           </Content>
         </Layout>
       </Layout>

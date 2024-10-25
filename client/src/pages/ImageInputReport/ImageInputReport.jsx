@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./ImageInputReport.css";
-import {
-  FaUserCircle,
-  FaTrashAlt,
-  FaSun,
-  FaGem,
-  FaQuestionCircle,
-  FaPowerOff,
-} from "react-icons/fa";
+import { FaHistory, FaQuestionCircle, FaPowerOff } from "react-icons/fa";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import axios from "axios";
 import ImageInput from "./ImageInput";
 import LoadingButton from "../../components/Buttons/LoadingButton";
 import toast from "react-hot-toast";
 import { logo } from "../../utils";
 import { jwtDecode } from "jwt-decode";
+import { Link } from "react-router-dom";
+import Logout from "../Login/Logout";
+import HorizontalNonLinearStepper from "../../components/Stepper/Stepper";
+import { Avatar, Space } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 const ImageInputReport = () => {
   const [uploadedImages, setUploadedImages] = useState([null]);
@@ -25,6 +24,9 @@ const ImageInputReport = () => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [imageResults, setImageResults] = useState(null);
   const [reportId, setReportId] = useState(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [topDiseases, setTopDiseases] = useState([]);
+  const [allFoundDiseases, setAllFoundDiseases] = useState([]);
 
   const getUserId = async () => {
     try {
@@ -39,9 +41,23 @@ const ImageInputReport = () => {
     }
   };
 
+  // Function to get and decode cookie
+  const getCookie = (name) => {
+    const cookieArr = document.cookie.split("; ");
+    const cookie = cookieArr.find((row) => row.startsWith(`${name}=`));
+    if (cookie) {
+      const value = cookie.split("=")[1];
+      return decodeURIComponent(value); // Decode the URL-encoded string
+    }
+    return null;
+  };
+
   const handleImageChange = (event, index) => {
     const file = event.target.files[0];
     if (file) {
+      if (activeStep <= 1) {
+        setActiveStep(1);
+      }
       setUploadedImages((prevImages) => {
         const updatedImages = [...prevImages];
         updatedImages[index] = file; // Store the file object, not the URL
@@ -94,6 +110,7 @@ const ImageInputReport = () => {
       )
       .then((response) => {
         setUpdatedImageLinks(response.data.imageUrls);
+        setActiveStep(2);
         setLoading(false);
         setUploadSuccess(true);
         toast.success("Images uploaded successfully.");
@@ -117,7 +134,8 @@ const ImageInputReport = () => {
           timeStamp: new Date().toISOString(),
         }
       );
-      return response.data;
+      const reportId = response.data.id;
+      return reportId;
     } catch (error) {
       console.error(error);
     }
@@ -139,10 +157,18 @@ const ImageInputReport = () => {
       );
       setImageResults(response.data); // Set the response data directly
       setSubmitLoading(false);
+      await setActiveStep(3);
       toast.success("Images submitted for analysis successfully.");
       const id = await handleReportSave(response.data);
-      setReportId(id);
+      await setActiveStep(4);
       toast.success("Report saved successfully.");
+      await setReportId(id);
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/reports/text-report/${id}`
+      );
+      await setActiveStep(5);
+      toast.success("Text report genarated and saved successfully.");
+      await setActiveStep(6);
     } catch (error) {
       console.error(error);
       setSubmitLoading(false);
@@ -151,36 +177,64 @@ const ImageInputReport = () => {
   };
 
   const handleReport = () => {
-    const id = reportId.id; // Replace with the actual ID
-    const url = `/report/${id}`;
+    // const id = reportId; // Replace with the actual ID
+    const url = `/report/${reportId}`;
     window.open(url, "_blank");
   };
 
   return (
     <div className="main-grid">
       <div className="container-sidebar">
-        <div className="account-info">
-          <FaUserCircle className="profile-icon" />
-          <div>
-            <div className="account-name">Antoine Piedanna</div>
+        <Link to="/" className="account-info text-white hover:text-gray-200">
+          <Space direction="vertical" size={16}>
+            <Space wrap size={10}>
+              <Avatar size={45} icon={<UserOutlined />} />
+            </Space>
+          </Space>
+          <div className="pl-2 flex flex-col justify-start items-start">
+            <div className="account-name">
+              {getCookie("username") &&
+                getCookie("username")[0].toUpperCase() +
+                  getCookie("username").slice(1)}
+            </div>
             <div className="account-type">Free account</div>
           </div>
-        </div>
+        </Link>
         <div className="w-full">
-          <button className="new-chat-btn">+ Start a new chat</button>
+          <Link to="/image-inpur-report" target="_blank">
+            <button className="new-chat-btn">+ Start a new page</button>
+          </Link>
           <div className="settings">
             {[
-              { icon: FaTrashAlt, text: "Clear all conversations" },
-              { icon: FaSun, text: "Switch Light Mode" },
-              { icon: FaGem, text: "Upgrade to GPT Pro" },
-              { icon: FaQuestionCircle, text: "Updates & FAQ" },
-              { icon: FaPowerOff, text: "Log out" },
+              {
+                icon: IoChatbubbleEllipsesSharp,
+                text: "Chat with Chatbot",
+                to: "/chatbot",
+              },
+              { icon: FaHistory, text: "Report History", to: "/user-history" },
+              {
+                icon: FaQuestionCircle,
+                text: "Disease Informations",
+                to: "/disease-info",
+              },
             ].map((item, index) => (
-              <div key={index} className="settings-item tracking-wider">
+              <Link
+                to={item.to}
+                key={index}
+                className="settings-item tracking-wider"
+              >
                 <item.icon className="icon" />
                 {item.text}
-              </div>
+              </Link>
             ))}
+            <Logout
+              button={
+                <div className="settings-item tracking-wider">
+                  <FaPowerOff className="icon" />
+                  Log out
+                </div>
+              }
+            />
           </div>
         </div>
       </div>
@@ -201,6 +255,9 @@ const ImageInputReport = () => {
             <p className="tagline">
               The power of AI at your service - Tame the knowledge!
             </p>
+          </div>
+          <div className="w-full py-4">
+            <HorizontalNonLinearStepper activeStep={activeStep} />
           </div>
           <div className="image-upload">
             {imageFields.map((index) => (
@@ -232,11 +289,13 @@ const ImageInputReport = () => {
         </div>
         <div className="fixed bottom-[10px] w-2/3 py-3">
           <div className="flex justify-center gap-4">
-            <LoadingButton
-              onClick={handleSubmit}
-              loading={submitLoading}
-              text="Submit"
-            />
+            {!reportId && (
+              <LoadingButton
+                onClick={handleSubmit}
+                loading={submitLoading}
+                text="Submit"
+              />
+            )}
             {reportId && (
               <LoadingButton text="View Report" onClick={handleReport} />
             )}

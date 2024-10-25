@@ -8,6 +8,7 @@ import {
   FieldTimeOutlined,
 } from "@ant-design/icons";
 import RadialBarChart from "../../../components/Graphs/RadialBarChart";
+import { diseasesRecall } from "../../../utils/constants";
 
 const SubmittedImagesCard = ({ report }) => (
   <>
@@ -21,17 +22,41 @@ const SubmittedImagesCard = ({ report }) => (
 const IdentifiedDiseasesCard = ({ results }) => {
   return (
     <>
-      <div className="flex justify-start text-xl items-center gap-x-4 mt-3 text-orange-400 border-[1px] border-orange-400 bg-orange-400 bg-opacity-30 rounded-xl px-4 py-2">
+      <div className="flex justify-start text-xl items-center gap-x-4 mt-3 mb-2 text-orange-400 border-[1px] border-orange-400 bg-orange-400 bg-opacity-30 rounded-xl px-4 py-2">
         <ExclamationCircleOutlined />
-        <div> We Found 3 Diseases as Positive </div>
+        <div> We Found {results.length} Diseases as Positive </div>
       </div>
-      <div className="flex justify-start items-center my-4">
+      <div className="w-full grid grid-cols-2 gap-4 my-4">
         {results.map((result, index) => (
-          <RadialBarChart key={index} results={result} height={200} />
+          <div
+            key={index}
+            className={`flex flex-col gap-2 pb-2 bg-pink-gradient items-center justify-center border-[1px] border-gray-300 border-opacity-50 rounded-lg ${
+              // Check if it's the last item and if the total number of results is odd
+              results.length % 2 === 1 && index === results.length - 1
+                ? "col-span-2"
+                : ""
+            }`}
+          >
+            <div className="mb-4">
+              <h1 className="text-3xl mt-4 mb-6 text-red-500 font-semibold text-center">
+                {result.disease}
+              </h1>
+              <div className="text-base text-white mt-2 mb-2">
+                The system effectively identifies about{" "}
+              </div>
+              <div className="text-xl text-white">
+                {diseasesRecall[result.disease] * 100}%
+              </div>
+              <div className="text-base text-white mt-2">
+                of actual {result.disease} cases.
+              </div>
+            </div>
+          </div>
         ))}
       </div>
+
       <h1 className="text-lg text-white font-semibold text-center mb-2">
-        Identified Diseases Confidence
+        Identified Diseases
       </h1>
     </>
   );
@@ -76,24 +101,11 @@ const Overview = ({ report, loading }) => {
         },
         {
           title: "Prediction Time",
-          value: "2.5s",
+          value: "12.5s",
           icon: FieldTimeOutlined,
         },
       ]);
-      setResults([
-        {
-          desease: "Phneumonia",
-          percentage: 67,
-        },
-        {
-          desease: "Covid-19",
-          percentage: 80,
-        },
-        {
-          desease: "Tuberculosis",
-          percentage: 90,
-        },
-      ]);
+      setResults(report.topConditions);
     }
   }, [loading]);
 
