@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
+import { Provider } from "react-redux";
+import store from "./store";
 
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
@@ -10,20 +12,23 @@ import ImageInputReport from "./pages/ImageInputReport/ImageInputReport";
 import UserHistory from "./pages/UserHistory/UserHistory";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import ReportPage from "./pages/ReportPage/ReportPage";
+import DiseaseInfo from "./pages/DiseaseInfo/DiseaseInfo";
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/chatbot/:chatId" element={<Chatbot />} />
           <Route path="/image-input-report" element={<ImageInputReport />} />
           <Route path="/user-history" element={<UserHistory />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/report/:id" element={<ReportPage />} />
+          <Route path="/disease-info" element={<DiseaseInfo />} />
         </Routes>
       </BrowserRouter>
       <Toaster
@@ -68,7 +73,7 @@ function App() {
           },
         }}
       />
-    </>
+    </Provider>
   );
 }
 

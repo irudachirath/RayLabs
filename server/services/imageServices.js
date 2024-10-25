@@ -8,7 +8,7 @@ module.exports.uploadImage = async (filePath, fileName, userId) => {
   if (!user.exists) {
     throw new Error("User not found");
   }
-  const remotePath = `images/${user.data().name}_${userId}/${fileName}`;
+  const remotePath = `images/${user.data().firstName}_${userId}/${fileName}`;
 
   await bucket.upload(filePath, { destination: remotePath });
 

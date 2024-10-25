@@ -141,3 +141,25 @@ button:focus-visible {
 .ant-image-mask {
   border-radius: 50%;
 }
+
+.markdown {
+  line-height: 1.8;
+  color: #fff; /* Adjust text color as needed */
+}
+
+.markdown p,
+.markdown li,
+.markdown ul {
+  margin: 4px 0; /* Reduces space between elements */
+  padding: 0;
+}
+
+.markdown ul {
+  list-style-type: disc; /* Ensures bullet points are visible */
+  margin-left: 20px; /* Proper indentation for lists */
+  /* margin-right: 20px; */
+}
+
+.markdown strong {
+  font-weight: bold; /* Ensures bold text is rendered correctly */
+}

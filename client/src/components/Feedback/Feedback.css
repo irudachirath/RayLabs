@@ -1,0 +1,60 @@
+.feedback-container {
+  color: #fff;
+  padding: 1rem;
+  border-radius: 15px;
+  max-width: 650px;
+  text-align: center;
+}
+
+.feedback-container h2 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+textarea {
+  width: 80%; /* Increased width */
+  padding: 1rem; /* Increased padding for larger field */
+  border-radius: 10px;
+  border: none;
+  background-color: #333333;
+  color: #ffffff;
+  resize: none; /* Prevents resizing */
+}
+
+textarea::placeholder {
+  color: #e0d6e8;
+}
+
+.submit-button {
+  background-color: #8f3e97;
+  color: #ffffff;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #70417e;
+}
+
+/* customRate.css */
+
+.white-border-rate .ant-rate-star .anticon svg {
+  stroke: #ffffff; /* Set the border color to white */
+  stroke-width: 5px; /* Adjust the border width as needed */
+}

@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const NavListElement = ({ link, text }) => {
   return (
-    <li className="relative p-3 px-5 group">
+    <li className="relative p-3 px-3 group">
       <div className="absolute w-0 h-full border-b-4 border-[#8F3E97] top-0 left-0 transition-all duration-300 group-hover:w-full"></div>
       <Link
         to={link}
-        className="relative text-white font-semibold group-hover:text-[#fff]"
+        className="text-[17px] relative text-white font-semibold group-hover:text-[#fff]"
       >
         {text}
       </Link>

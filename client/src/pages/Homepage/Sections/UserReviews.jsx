@@ -6,6 +6,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import ModalTemplete from "../../../components/Modals/ModalTemplete";
+import Feedback from "../../../components/Feedback/Feedback";
 
 const userReviews = [
   {
@@ -111,6 +113,9 @@ function UserReviews() {
             <div className="swiper-pagination"></div>
           </div>
         </Swiper>
+      </div>
+      <div className="mt-10 -mb-6">
+        <ModalTemplete content={<Feedback />} text={"Add Your Feedback"} />
       </div>
     </div>
   );

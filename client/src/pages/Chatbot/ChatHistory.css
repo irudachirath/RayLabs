@@ -1,0 +1,39 @@
+/* ChatHistory.css */
+.chat-history {
+  max-height: 450px; /* Adjust height as needed */
+  overflow-y: auto; /* Makes the list scrollable */
+  background: #222222; /* Dark background */
+  color: #ffffff; /* White text color */
+  font-family: "Arial", sans-serif; /* Font styling */
+  font-size: 16px;
+  width: full; /* Adjust width as needed */
+  /* border: 1px solid #333; */
+}
+
+.chat-item {
+  border-bottom: 1px solid #333;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  background-color: #2c2c2c; /* Ensure background color matches your design */
+}
+
+.chat-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100px; /* width of the fading effect */
+  background: linear-gradient(
+    to right,
+    rgba(44, 44, 44, 0),
+    rgba(44, 44, 44, 1) 100%
+  );
+  pointer-events: none;
+}
+
+.chat-item:hover {
+  background-color: #333; /* Hover effect */
+  cursor: pointer;
+}

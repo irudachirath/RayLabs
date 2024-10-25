@@ -1,0 +1,16 @@
+export const diseasesRecall = {
+  Atelectasis: 0.61,
+  Consolidation: 0.59,
+  Infiltration: 0.5,
+  Pneumothorax: 0.73,
+  Edema: 0.71,
+  Emphysema: 0.68,
+  Fibrosis: 0.41,
+  Effusion: 0.73,
+  Pneumonia: 0.54,
+  Pleural_Thickening: 0.56,
+  Cardiomegaly: 0.66,
+  Nodule: 0.57,
+  Mass: 0.67,
+  Hernia: 0.46,
+};

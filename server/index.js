@@ -19,6 +19,7 @@ app.use(express.json());
 app.use("/api/v1/images", require("./routes/imageRoutes.js"));
 app.use("/api/v1/users", require("./routes/userRoutes.js"));
 app.use("/api/v1/reports", require("./routes/reportRoutes.js"));
+app.use("/api/v1/chats", require("./routes/chatRoutes.js"));
 
 // start server
 app.listen(PORT, async () => {

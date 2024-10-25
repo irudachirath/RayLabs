@@ -50,7 +50,7 @@ const ImageAnalysis = ({ report, loading }) => {
   const [avgPred, setAvgPred] = useState({});
 
   const cardStyle =
-    "flex flex-col justify-center items-center bg-[#000000] border-[#bbbbbb83] border-[1px] mt-2 h-fit rounded-lg";
+    "flex flex-col justify-center items-center bg-[#000000] border-[#bbbbbb83] border-[1px] h-fit rounded-lg";
 
   const getAverageModelValue = (results) => {
     const avgPred = {};
@@ -71,7 +71,7 @@ const ImageAnalysis = ({ report, loading }) => {
 
   return (
     <>
-      <h1 className="text-xl text-start pb-2 mt-5 font-semibold text-white">
+      <h1 className="text-xl text-start pb-2 font-semibold text-white">
         Image Analysis
       </h1>
 
@@ -91,26 +91,9 @@ const ImageAnalysis = ({ report, loading }) => {
           )}
         </>
       </div>
-      <div className="flex justify-center gap-3">
-        <div className={`w-1/2 p-2 py-4 ${cardStyle}`}>
-          <>
-            {loading ? (
-              <span className="mr-2 my-auto">
-                <Spin style={{ color: "#ffffff" }} />
-              </span>
-            ) : (
-              <>
-                {/* avarage prediction of all images graph */}
-                <Graph results={getAverageModelValue(report)} />
-                <h1 className="text-lg text-white font-semibold text-center mb-2">
-                  Average Probabilities for All Images
-                </h1>
-              </>
-            )}
-          </>
-        </div>
-        <div className="w-1/2 flex flex-col gap-3">
-          <div className={`w-full mt-2 p-4 ${cardStyle}`}>
+      <div className="flex justify-center gap-3 mt-3">
+        {report.data.length > 1 && (
+          <div className={`w-1/2 p-2 py-4 ${cardStyle}`}>
             <>
               {loading ? (
                 <span className="mr-2 my-auto">
@@ -118,23 +101,17 @@ const ImageAnalysis = ({ report, loading }) => {
                 </span>
               ) : (
                 <>
-                  <Gallery
-                    imagesProp={report.data.map((d, index) => {
-                      return {
-                        imageSrc: d.image_url,
-                        thumbnailImageSrc: d.image_url,
-                        alt: `image_${index + 1}`,
-                      };
-                    })}
-                  />
+                  {/* avarage prediction of all images graph */}
+                  <Graph results={getAverageModelValue(report)} />
                   <h1 className="text-lg text-white font-semibold text-center mb-2">
-                    Likelihood Map of Pathologies
+                    Average Probabilities for All Images
                   </h1>
                 </>
               )}
             </>
           </div>
-        </div>
+        )}
+        <div className="w-1/2 flex flex-col gap-3"></div>
       </div>
     </>
   );

@@ -54,7 +54,7 @@ const {
   getReportIdsByUserId,
   getReportById,
   deleteReport,
-} = require("../services/reportService");
+} = require("../services/reportServices");
 
 describe("Report Services", () => {
   beforeEach(() => {
