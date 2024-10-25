@@ -6,6 +6,7 @@ const {
   deleteReport,
   getReportByUserId,
   getReportByReportId,
+  createTextReport,
 } = require("../controllers/reportController");
 
 // Define the /reports route
@@ -14,5 +15,6 @@ router.get("/user/:id", getReportByUserId);
 router.get("/report/:id", getReportByReportId);
 router.post("/", createReport);
 router.delete("/:id", deleteReport);
+router.post("/text-report/:id", createTextReport);
 
 module.exports = router;
