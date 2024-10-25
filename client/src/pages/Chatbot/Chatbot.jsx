@@ -11,8 +11,11 @@ import axios from "axios";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import { jwtDecode } from "jwt-decode";
 import MarkdownText from "../../components/MarkdownText/MarkdownText";
-import DotsLoader from "../../components/DotsLoader/DotsLoader";
 import ChatHistory from "./ChatHistory";
+import { Avatar, Space } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import Stack from "@mui/material/Stack";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const Chatbot = () => {
   const [isChatStarted, setIsChatStarted] = useState(false);
@@ -120,11 +123,11 @@ const Chatbot = () => {
     <div className="main-grid">
       <div className="container-sidebar">
         <div className="account-info">
-          <img
-            className="w-10 h-10 bg-red-500 rounded-full"
-            src={getCookie("picture")}
-            alt="User"
-          />
+          <Space direction="vertical" size={16}>
+            <Space wrap size={10}>
+              <Avatar size={45} icon={<UserOutlined color="#8F3E97" />} />
+            </Space>
+          </Space>
           <div className="pl-2 flex flex-col justify-start items-start">
             <div className="account-name">
               {getCookie("username") &&
@@ -211,7 +214,12 @@ const Chatbot = () => {
 
               {isLoading && (
                 <div className="message bot-message">
-                  <DotsLoader />
+                  <Stack
+                    sx={{ width: "300px", color: "grey.500", padding: 1 }}
+                    spacing={2}
+                  >
+                    <LinearProgress color="secondary" />
+                  </Stack>
                 </div>
               )}
             </div>
