@@ -12,7 +12,7 @@ import ImageInputReport from "./pages/ImageInputReport/ImageInputReport";
 import UserHistory from "./pages/UserHistory/UserHistory";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import ReportPage from "./pages/ReportPage/ReportPage";
-import MockLogin from "./pages/Login/MockLogin";
+import DiseaseInfo from "./pages/DiseaseInfo/DiseaseInfo";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
           <Route path="/user-history" element={<UserHistory />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/report/:id" element={<ReportPage />} />
-          <Route path="/mocklogin" element={<MockLogin />} />
+          <Route path="/disease-info" element={<DiseaseInfo />} />
         </Routes>
       </BrowserRouter>
       <Toaster
