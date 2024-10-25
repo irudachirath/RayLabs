@@ -6,39 +6,58 @@ import Login from "../../pages/Login/Login";
 import Logout from "../../pages/Login/Logout";
 import { logo } from "../../utils";
 import { Dropdown, Space, Menu } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
 
-const items = [
+const itemsServices = [
   {
     key: "1",
     label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="/image-input-report"
-        className="text-base p-1 px-2"
-      >
+      <Link to="/image-input-report" className="text-base p-1 px-2">
         Image Analysis
-      </a>
+      </Link>
     ),
   },
   {
     key: "2",
     label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="/chatbot"
-        className="text-base p-1 px-2"
-      >
+      <Link to="/chatbot" className="text-base p-1 px-2">
         Chatbot
-      </a>
+      </Link>
     ),
   },
 ];
 
-const menu = (
+const itemsHowWeWork = [
+  {
+    key: "1",
+    label: (
+      <Link to="/help" className="text-base p-1 px-2">
+        User Guide
+      </Link>
+    ),
+  },
+  {
+    key: "2",
+    label: (
+      <Link to="/disease-info" className="text-base p-1 px-2">
+        Disease Info
+      </Link>
+    ),
+  },
+];
+
+const menuServices = (
   <Menu>
-    {items.map((item) => (
+    {itemsServices.map((item) => (
+      <Menu.Item key={item.key}>{item.label}</Menu.Item>
+    ))}
+  </Menu>
+);
+
+const menuHowWeWork = (
+  <Menu>
+    {itemsHowWeWork.map((item) => (
       <Menu.Item key={item.key}>{item.label}</Menu.Item>
     ))}
   </Menu>
@@ -76,7 +95,7 @@ const Navbar = ({ isBlured = true }) => {
           </Link>
           <ul className="flex items-center space-x-8">
             <NavListElement link="/" text="Home" />
-            <Dropdown overlay={menu}>
+            <Dropdown overlay={menuServices}>
               <a
                 onClick={(e) => e.preventDefault()}
                 className="text-white font-semibold hover:text-white"
@@ -90,19 +109,22 @@ const Navbar = ({ isBlured = true }) => {
             {isLoggedIn && (
               <NavListElement link="/user-history" text="User History" />
             )}
-            <NavListElement link="/help" text="How we Work" />
+            <Dropdown overlay={menuHowWeWork}>
+              <a
+                onClick={(e) => e.preventDefault()}
+                className="text-white font-semibold hover:text-white"
+              >
+                <Space>
+                  <NavListElement link="" text="How we Work" />
+                </Space>
+              </a>
+            </Dropdown>
             <NavListElement link="/about" text="About" />
             <li>
               <div className="flex flex-row-reverse items-center justify-center h-9 w-full gap-6">
                 {isLoggedIn ? (
                   <>
                     <Logout />
-                    <img
-                      className="w-10 h-10 bg-red-500 rounded-full"
-                      src={pictureUrl}
-                      alt="User"
-                      crossOrigin="anonymous"
-                    />
                   </>
                 ) : (
                   <Login />
