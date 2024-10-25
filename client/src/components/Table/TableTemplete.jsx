@@ -25,7 +25,7 @@ const TableTemplete = () => {
     }
   };
 
-  const handleReportRemove = async (id, userId) => {
+  const handleReportRemove = async (id) => {
     try {
       const res = await axios.delete(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/reports/${id}`
@@ -107,7 +107,7 @@ const TableTemplete = () => {
       render: (id) => (
         <div
           onClick={() => {
-            handleReportRemove(id, userId);
+            handleReportRemove(id);
           }}
           className="text-[#ff0000d1] hover:text-[#ffa1a1]"
         >
