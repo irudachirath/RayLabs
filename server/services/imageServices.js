@@ -5,11 +5,10 @@ const db = admin.firestore();
 module.exports.uploadImage = async (filePath, fileName, userId) => {
   const userRef = db.collection("users").doc(userId);
   const user = await userRef.get();
-  console.log(user);
   if (!user.exists) {
     throw new Error("User not found");
   }
-  const remotePath = `images/${user.data().name}_${userId}/${fileName}`;
+  const remotePath = `images/${user.data().firstName}_${userId}/${fileName}`;
 
   await bucket.upload(filePath, { destination: remotePath });
 

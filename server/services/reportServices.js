@@ -1,10 +1,67 @@
+const { default: axios } = require("axios");
 const firebase = require("../config/firebase");
 const db = firebase.firestore();
 const bucket = firebase.storage().bucket();
 
+const getAllFoundConditions = (data) => {
+  const allFoundConditions = [];
+  data.forEach((condition) => {
+    condition.prediction.forEach((pred) => {
+      if (pred.sigmoid_value > 0.5) {
+        allFoundConditions.push({
+          disease: pred.disease,
+          sigmoid_value: pred.sigmoid_value,
+        });
+      }
+    });
+  });
+  if (allFoundConditions.length === 0) {
+    allFoundConditions.push({
+      disease: "No conditions found",
+      sigmoid_value: 0,
+    });
+  }
+  return allFoundConditions;
+};
+
+const getAverageSigmoidValue = (results) => {
+  const avgPred = {};
+  results.data.map((result) => {
+    result.prediction.map((pred) => {
+      if (avgPred[pred.disease] === undefined) {
+        avgPred[pred.disease] = pred.sigmoid_value;
+      } else {
+        avgPred[pred.disease] += pred.sigmoid_value;
+      }
+    });
+  });
+  Object.keys(avgPred).map((key) => {
+    avgPred[key] /= results.data.length;
+  });
+  return avgPred;
+};
+
+const getTopConditions = (avgPred) => {
+  const topConditions = [];
+  Object.keys(avgPred).forEach((key) => {
+    if (avgPred[key] > 0.5) {
+      topConditions.push({ disease: key, sigmoid_value: avgPred[key] });
+    }
+  });
+  if (topConditions.length === 0) {
+    topConditions.push({ disease: "No conditions found", sigmoid_value: 0 });
+  }
+  return topConditions;
+};
+
 module.exports.createReport = async (data) => {
+  const allFoundConditions = getAllFoundConditions(data.data.data);
+  const avgPred = getAverageSigmoidValue(data.data);
+  const topConditions = getTopConditions(avgPred);
   const report = {
     data: data.data.data || [],
+    allFoundConditions: allFoundConditions || [],
+    topConditions: topConditions || [],
     status: data.data.status || "pending",
     description: data.description || "",
     location: data.location || "",
@@ -42,7 +99,6 @@ module.exports.getReportIdsByUserId = async (userId) => {
     error.status = 404;
     throw error;
   }
-  console.log(user.data().reportIds);
   return user.data().reportIds;
 };
 
@@ -80,7 +136,7 @@ module.exports.deleteReport = async (reportId) => {
   });
   // get the userId from the report
   const doc = await db.collection("users").doc(userId).get();
-  const name = doc.data().name; // Replace 'name' with the actual field name
+  const name = doc.data().firstName; // Replace 'name' with the actual field name
 
   // get image links from the report
   const report = await reportRef.get();
@@ -97,4 +153,38 @@ module.exports.deleteReport = async (reportId) => {
 
   // delete the report from the reports
   await reportRef.delete();
+};
+
+module.exports.createTextReport = async (reportId) => {
+  const reportRef = db.collection("reports").doc(reportId);
+  const report = await reportRef.get();
+  if (!report.exists) {
+    const error = new Error("Report not found");
+    error.status = 404;
+    throw error;
+  }
+  // get top conditions from the report
+  const topConditionsObj = report.data().topConditions;
+  // get 5 highest sigmoid value from the top conditions
+  // check if the value of disease is 'No conditions found'then return no conditions found
+  if (topConditionsObj[0].disease === "No conditions found") {
+    return { message: "No conditions found" };
+  }
+  let topConditions = topConditionsObj
+    .sort((a, b) => b.sigmoid_value - a.sigmoid_value)
+    .slice(0, 5);
+  topConditions = topConditions.map((condition) => condition.disease);
+  console.log(topConditions);
+  const body = {
+    conditions: topConditions,
+  };
+  const textReport = await axios.post(
+    `${process.env.FASTAPI_BACKEND_URL}/api/v1/chatbot/report/`,
+    body
+  );
+  // add new fields to the report called 'textReport'
+  await reportRef.update({
+    textReport: textReport.data,
+  });
+  return { message: "Text report created successfully" };
 };
