@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { setLoggedIn, setLoggedOut } from "../../reducers/userReducer";
 import { useNavigate } from "react-router-dom";
 import ModalTemplete from "../../components/Modals/ModalTemplete";
+import GradientButton from "../../components/Buttons/GradientButton";
 
-const Logout = () => {
+const Logout = ({ button = <GradientButton text="Logout" /> }) => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Logout = () => {
       <ModalTemplete
         close={modelClose}
         text={"Logout"}
+        button={button ? button : null}
         content={
           <div className="p-5 text-white">
             <h2 className="text-2xl font-bold mb-4">Confirm Logout</h2>
