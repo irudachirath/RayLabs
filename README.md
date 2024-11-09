@@ -11,6 +11,9 @@ This is the Implementation for Medical Diagnosis Assistant. This is a Web App de
 ## Objective
 This project aims to empower users by providing timely and accurate preliminary medical diagnoses, contributing to the advancement of telemedicine and patient-centric care.
 
+## Chatbot configuration
+https://github.com/vidushaDeSilva/Medical-Chatbot-and-Diagnostic-Report-Content-Generation-Model by 210099V
+
 ## Team
 - Chirath A.A.I. (210086E)
 - De Silva D.A.V. (210099V)
